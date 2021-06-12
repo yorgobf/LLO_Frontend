@@ -24,26 +24,6 @@ import Host1 from './Host1'
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// const CustomTabButton = ({children, onPress}) =>(
-//     <TouchableOpacity onPress={onPress}
-//     style={{
-//     top: -30,
-//     justifyContent:'center',
-//     alignItems:'center',
-//     ...styles.shadow
-//     }}
-//     >
-//     <View style={{
-//         width: 70,
-//         height: 50,
-//         borderRadius: 15,
-//         color: '#e32f45'
-//     }}>
-//         {children}
-//     </View>
-//     </TouchableOpacity>
-// );
-
 const Navigator = () => {
     const navigation = useNavigation();
     return (

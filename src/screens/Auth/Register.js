@@ -6,6 +6,7 @@ import { Dimensions, Image, KeyboardAvoidingView, StyleSheet, Text, View, TextIn
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import API from '../../../NGROK'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const width = Dimensions.get('screen').width
 const height =  Dimensions.get('screen').height
@@ -13,6 +14,8 @@ const height =  Dimensions.get('screen').height
 const Register = () => {
     
     const navigation = useNavigation()
+
+    const [spinner,setSpinner] = useState(false)
     
     const [username ,setUsername]=useState("");
     const [email , setEmail] = useState("");
@@ -46,6 +49,7 @@ const Register = () => {
             alert('Password must be at least 8 characters')
             return
         } 
+        setSpinner(true)
 
         const data = {
             name : username ,
@@ -54,7 +58,9 @@ const Register = () => {
         }
     
         axios.post(`${API}/api/register`,data)
-        .then(res => {
+        .then(
+            res => {
+                setSpinner(false)
             if (res.data.errors) {
                 if (res.data.errors.name) {
                  alert(res.data.errors.name)
@@ -68,6 +74,7 @@ const Register = () => {
             }
             }).catch(err => {
             console.warn(err)
+            setSpinner(false)
             })
         
        
@@ -92,6 +99,13 @@ const Register = () => {
     return (
         <ScrollView>
         <KeyboardAvoidingView style={styles.page}>
+
+            <Spinner
+                visible={spinner}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+            />
+
             {/* Header */}
                 <Image source={require('../../../assets/gif/login.gif')} style={styles.gif}/>
             <View style={styles.topCont}></View>
@@ -268,6 +282,10 @@ const styles = StyleSheet.create({
         aspectRatio: 3/2,
         // marginHorizontal:5,
 
+    },
+
+    spinnerTextStyle: {
+        color: '#FFF'
     },
 
     btn:{

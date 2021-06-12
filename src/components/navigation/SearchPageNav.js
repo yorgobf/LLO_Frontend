@@ -5,9 +5,7 @@ import Maps from '../../screens/Map/Maps';
 import searchResult from '../../screens/searchResults/SearchResult';
 import { NavigationContainer } from '@react-navigation/native';
 
-
-
-const SearchPageNav = () => {
+const SearchPageNav = (props) => {
     
     const Tab = createMaterialTopTabNavigator();
 
@@ -20,7 +18,11 @@ const SearchPageNav = () => {
                 }
             }}
         >
-            <Tab.Screen name={"List"} component={searchResult} />
+            <Tab.Screen name={"List"}  //component={searchResult}
+            >
+                {<searchResult businesses={props.route.params.item}/>}
+            </Tab.Screen>
+
             <Tab.Screen name={"Map"} component={Maps} />
         </Tab.Navigator>
     )

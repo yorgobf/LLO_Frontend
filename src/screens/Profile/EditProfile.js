@@ -5,11 +5,12 @@ import axios from 'axios'
 import API from '../../../NGROK'
 import { useNavigation } from '@react-navigation/core'
 
-const EditProfile = () => {
+const EditProfile = ({navigation , route}) => {
 
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
+
+    const { userId, userToken } = route.params;
     
-    const [username ,setUsername]=useState("");
     const [oldPassword , setOldPassword] = useState("");
     const [password ,setPassword]=useState("");
     const [confPass , setConfPass] = useState("");
@@ -58,9 +59,12 @@ const EditProfile = () => {
             newPassword : password ,
         }
     
-        axios.post(`${API}/api/update/6`,data)
+        axios.post(`${API}/api/update/${userId}` , data , {
+            headers: {
+                authorization: `Bearer ${userToken}` 
+            }
+          })
         .then(res => {
-            console.warn('response received', res.data);
             if(res.data === 'Incorrect Password.') {
                 setOldPassword('')
                 setPassword('')
@@ -68,20 +72,18 @@ const EditProfile = () => {
                 alert(res.data);
             } else {
                 alert(res.data)
-                navigation.goback();
+                navigation.navigate('Profile');
             }
         }).catch(err => {
             console.warn(err, 'Failed to send request')
         })
         
        
-            // console.log('state variables before', name,email,pass,cpass)
     }
 
 
     return (
         <ScrollView style={{marginBottom:70}}>
-
 
             <View style={styles.container}>
 

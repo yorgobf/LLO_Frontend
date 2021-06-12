@@ -4,6 +4,10 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Lebanon Lived Outdoors needs access to your photo library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Lebanon Lived Outdoors needs access to your camera so you can take photos.</string>
 	<key>CFBundleDisplayName</key>
 	<string>FinalProject</string>
 	<key>CFBundleExecutable</key>

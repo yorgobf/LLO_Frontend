@@ -1,12 +1,25 @@
 import { useNavigation } from '@react-navigation/core'
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Image, Button, Pressable } from 'react-native'
+import React , { useState } from 'react'
+import { StyleSheet, Text, View, Dimensions, ImageBackground , Image , Button, Pressable } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import Octicons from 'react-native-vector-icons/Octicons'
+import Feather from 'react-native-vector-icons/Feather'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const PostScreen = () => {
+const PostScreen = (props) => {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation()
+
+    const [lessons,setLessons] = useState(props.route.params.item.lessons)
+    const [wifi,setWifi] = useState(props.route.params.item.wifi)
+    const [toilets,setToilets] = useState(props.route.params.item.toilets)
+    const [water,setWater] = useState(props.route.params.item.water)
+    const [shower,setShower] = useState(props.route.params.item.shower)
+    const [parking,setParking] = useState(props.route.params.item.parking)
+    const [fire,setFire] = useState(props.route.params.item.fire)
 
     const goToBookingScreen = () =>{
             navigation.navigate("Book")
@@ -14,37 +27,136 @@ const PostScreen = () => {
 
     return (
         <View style={{height:'100%'}}>
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.mainContainer}>
             <View style={{       }}>
+
             {/*image */}
-                <Image source={require('../../../assets/images/glamping.jpeg')} style={styles.image}/>
+                {/* <Image source={require('../../../assets/images/glamping.jpeg')} style={styles.image}/> */}
+                <ImageBackground source={require('../../../assets/images/glamping.jpeg')} style={styles.image}>
+                <Pressable>
+                    <Octicons name={'x'} size={30} style={{padding:10,marginTop:5}} color={'white'} onPress={()=>navigation.goBack()}/>
+                </Pressable>
+                </ImageBackground>
             </View>
 
-                <View style={{padding: 7}}>
+                <View style={{padding: 14}}>
                 {/*Location */}
                 <View style={{flexDirection:'row', alignItems:'center'}}>
                 <Ionicons name={'location-sharp'} size={15} color={'#111'}/>
-                <Text style={styles.loc}> Laklouk </Text>
+                <Text style={styles.loc}> {props.route.params.item.location} </Text>
                 </View>
 
                 <View style={{
                     paddingLeft:5,
                     borderBottomWidth: 1,
-                    borderColor: 'lightgrey'
+                    borderColor: 'lightgrey',
+                    flexDirection:'row',
+                    alignItems:'center'
                     }}>
-                    <Text style={{fontWeight:'bold',fontSize:25}}>Le Camp</Text>
-                    <View style={{flexDirection:'row', }}>
-                        <Text>Hosted by : </Text>
-                        <Text style={{textDecorationLine: 'underline',marginBottom:7}}>Yorgobf</Text>
-                    </View>
+                        <View style={{borderRightColor:'lightgrey',borderRightWidth:1,width:'50%'}}>
+                            <Text style={{fontWeight:'bold',fontSize:25}}>{props.route.params.item.name}</Text>
+                            <View style={{flexDirection:'row', }}>
+                                <Text>Hosted by : </Text>
+                                <Text style={{textDecorationLine: 'underline',marginBottom:7}}>{props.route.params.item.hostname}</Text>
+                        </View>
+                        </View>
+                        <View style={{marginLeft:5}}>
+                            <Text style={{fontSize:15, fontWeight:'bold' ,marginBottom:3 ,marginLeft:5}}>Category :</Text>
+                            <Text style = {{marginBottom:7}} > {props.route.params.item.category}</Text>
+                        </View>
                 </View>
 
                 <View  style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey'}} >
-                    <Text style={{textDecorationLine: 'underline' ,fontSize:17, fontWeight:'bold' ,marginBottom:5 }}>Description :</Text>
-                    <Text style={styles.description}>At 'Le camp' we have ... to enjoy your night in the wilderness with your friends and family dfsdfsdfsfsff weffeff ef qef g fergre gwerg rg rgsrgr gwrgwrgw ergwgrw .</Text>
+                    <Text style={{fontSize:17, fontWeight:'bold'}}>Description :</Text>
+                    <Text style={styles.description}>{props.route.params.item.description}</Text>
                 </View>
-            {/*Type and Description*/}
-            
+
+                {/*Fees : */}
+                <View  style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey'}} >
+                    <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:3 }}>Fees :</Text>
+                    <View style={{flexDirection:'row',padding:5}}>
+                        <Image source={require('../../../assets/tabIcons/adults.png')} style={{height:25,width:25,tintColor:'#5a5a5a'}}/>
+                        <Text style={{marginLeft:7,fontSize:17}}>Adults :</Text>
+                        <Text style={{marginLeft:6,fontSize:17}}>{props.route.params.item.price_adults}</Text>
+                        <FontAwesome name={'dollar'} size={15} style={styles.icon1} />
+                    </View>
+                    <View style={{flexDirection:'row',padding:5}}>
+                        <Image source={require('../../../assets/tabIcons/kid.png')} style={{height:25,width:25,tintColor:'#5a5a5a'}}/>
+                        <Text style={{marginLeft:7,fontSize:17}}>Kids :</Text>
+                        <Text style={{marginLeft:7,fontSize:17}}>{props.route.params.item.price_kids}</Text>
+                        <FontAwesome name={'dollar'} size={15} style={styles.icon} />
+                    </View>
+                </View>
+
+                {/*Amenities : */}
+                <View  style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey'}} >
+
+                    <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:10 }}>Amenities :</Text>
+
+                    <View style={{borderWidth:1,borderColor:'grey',borderRadius:5,flexDirection:'row',marginBottom:10}}>
+
+                        <View>
+                            <View style={{flexDirection:'row',marginLeft:7, padding:10, alignItems:'center'}}>
+                                <Feather name={'wifi'} size={30} style={{color: wifi==1?'black' : 'lightgrey'}}/>
+                                <Text style={{...styles.amenity , color: wifi==1?'black' : 'lightgrey'}}>Wifi</Text>
+                            </View>
+
+                            <View style={{flexDirection:'row',marginLeft:11, padding:8, alignItems:'center' , marginBottom:7}}>
+                                <FontAwesome5 name={'toilet'} size={29} style={{color: toilets==1?'black' : 'lightgrey'}}/>
+                                <Text style={{...styles.amenity , color: toilets==1?'black' : 'lightgrey'}}>Toilets</Text>
+                            </View>
+
+                            <View style={{flexDirection:'row',marginLeft:9, padding:6, alignItems:'center' , marginBottom:7}}>
+                                <Ionicons name={'water-outline'} size={29} style={{color: water==1?'black' : 'lightgrey'}}/>
+                                <Text style={{...styles.amenity , color: water==1?'black' : 'lightgrey'}}>Potable Water</Text>
+                            </View>
+                        </View>
+
+                        <View style={{marginLeft:10}}>
+                            <View style={{flexDirection:'row',marginLeft:7, padding:11, alignItems:'center'}}>
+                                <FontAwesome name={'shower'} size={28} style={{color: shower==1?'black' : 'lightgrey'}}/>
+                                <Text style={{...styles.amenity , color: shower==1?'black' : 'lightgrey'}}>Shower</Text>
+                            </View>
+
+                            <View style={{flexDirection:'row',marginLeft:7, padding:9, alignItems:'center' , marginBottom:5}}>
+                            <Image source={require('../../../assets/tabIcons/parking.png')} style={{height:32,width:30,tintColor:parking==1?'black' : 'lightgrey'}}/>
+                                <Text style={{...styles.amenity , color: parking==1?'black' : 'lightgrey'}}>Parking</Text>
+                            </View>
+
+                            <View style={{flexDirection:'row',marginLeft:9, padding:6, alignItems:'center' , marginBottom:7}}>
+                                <Ionicons name={'bonfire-outline'} size={29} style={{color: fire==1?'black' : 'lightgrey'}}/>
+                                <Text style={{...styles.amenity , color: fire==1?'black' : 'lightgrey'}}>Camp Fire</Text>
+                            </View>
+                        </View>
+    
+                    </View>
+                    
+                </View>
+
+                {/*Lessons */}
+                {lessons ==1 && (
+                    <View style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey'}}>
+                        <Text style={{fontSize:17, fontWeight:'bold'}}>Lessons are also available :</Text>
+                        <Text style={{fontSize: 16,lineHeight: 26,padding : 5}}>{props.route.params.item.lessons_details}</Text>
+                    </View>
+                )}
+
+                {/*Location */}
+                <View style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey'}}>
+                    <Text style={{fontSize:17, fontWeight:'bold', marginBottom:10}}>Location on maps :</Text>
+                    <View style={styles.map}>
+                        <Text> Map Will be Added Soon</Text>
+                    </View>                    
+                </View>
+
+                {/*Chat with host */}
+                <View  style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
+                    <View>
+                        <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:3 }}>Have a Question?</Text>
+                        <Text style={{fontSize:17,marginBottom:5}}>Send {props.route.params.item.hostname} a message!</Text>
+                    </View>
+                    <Feather name={'chevron-right'} size={30} style={{marginLeft:'38%'}}/>
+                </View>
 
             
             {/*Number of persons */}
@@ -57,11 +169,10 @@ const PostScreen = () => {
 
         <View style={styles.book}>
             <View style={{flexDirection:'row'}}>
-                <View style={{justifyContent: 'center',}}>
+                <View style={{justifyContent: 'center',marginLeft:15}}>
                     {/**Price */}
                     <Text style={styles.prices}>
-                        <Text style={styles.oldprice}> 40$ </Text>
-                        <Text style={styles.price}> 30$ </Text>
+                        <Text style={styles.price}> {props.route.params.item.price_adults}$ </Text>
                         / night
                     </Text>
                 </View >
@@ -73,7 +184,7 @@ const PostScreen = () => {
                     alignItems: 'center', 
                     justifyContent: 'center', 
                     height:45 ,
-                    marginHorizontal:20,
+                    marginLeft : '13%',
                     borderRadius: 10,
             }}>
                     <Text style={{
@@ -95,28 +206,41 @@ export default PostScreen
 
 const styles = StyleSheet.create({
 
-    container: {
+    mainContainer: {
         height:'90%',
     },
-    
+
     image:{
         height:200,
         width: Dimensions.get('screen').width,
         aspectRatio: 24/12,
         resizeMode: 'cover',
-       
+        marginTop : 10 ,
     },
 
     description:{
         fontSize: 18,
         lineHeight: 26,
-        marginBottom : 7
+        padding: 5
+    },
+
+    map:{
+        width : Dimensions.get('screen').width - 40,
+        height: Dimensions.get('screen').width - 40, 
+        borderWidth:2,
+        borderColor:'grey',
+        borderRadius: 5,
+        marginBottom:10
     },
 
     nbPers: {
         marginVertical: 10,
         color: '#5b5b5b',
+    },
 
+    amenity:{
+        fontSize:17,
+        marginLeft:5
     },
 
     loc: {
@@ -151,5 +275,21 @@ const styles = StyleSheet.create({
         backgroundColor:'#1111',
         justifyContent: 'center',
         
+    },
+    
+    icon: {
+        position: 'absolute',
+        right: '69%',
+        top:10,
+        opacity: 0.5,
+        color:'black'
+    },
+
+    icon1: {
+        position: 'absolute',
+        right: '64%',
+        top:10,
+        opacity: 0.5,
+        color:'black'
     },
 })

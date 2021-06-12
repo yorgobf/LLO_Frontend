@@ -1,16 +1,43 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, ScrollView, StyleSheet, Text , View } from 'react-native'
 import Post from '../../components/post/Post'
 //import Post from '../../components/Post'
 
-const SearchResult = () => {
+const SearchResult = (props) => {
     return (
-        <View>
-            <Post />
-            {/* <FlatList
-                data={}
-                renderItem={({item})=> <Post post={item}/>}/> */}
-        </View>
+        <ScrollView style={{marginBottom:75}}>
+
+            {!props.route.params.item[0]  &&(
+                <View style={{
+                    width:Dimensions.get('screen').width,
+                    height:Dimensions.get('screen').height-300,
+                    alignItems:'center',
+                    justifyContent:'center'
+                }}>
+                    <Text style={{
+                        color:'grey',
+                        fontSize:25
+                    }}>Sorry for letting you down!</Text>
+                    
+                    <Text style={{
+                        color:'grey',
+                        fontSize:25
+                    }}>No Result</Text>
+                </View>
+            )}
+
+            <FlatList
+                keyExtractor={(item) => item.id}
+                data={props.route.params.item}
+                renderItem={({item}) => (
+                    <Post
+                        item={item} 
+                    />)}
+            />
+            
+
+        </ScrollView>
+           
     )
 }
 

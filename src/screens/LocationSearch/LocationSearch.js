@@ -5,12 +5,13 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import LocationRow from './LocationRow'
 
-const LocationSearch = () => {
+const LocationSearch = (props) => {
     const [location,setLocation]=useState('');
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
+            {console.warn(props.route.params.testprop)}
             {/*Text Input Component */}
             <View style={{height:300}}>
             <GooglePlacesAutocomplete
@@ -38,7 +39,7 @@ const LocationSearch = () => {
 
         <Pressable 
             style={styles.row}
-            onPress={()=> navigation.navigate("SearchResults")}
+            onPress={()=> navigation.navigate("Search Results")}
             >
                 <View style={styles.iconContainer}>
                     <Ionicons name={'location-sharp'} size={28} color={'#fff'}/>

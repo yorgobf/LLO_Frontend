@@ -4,14 +4,24 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import Entypo from 'react-native-vector-icons/Entypo'
 import Octicons from 'react-native-vector-icons/Octicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { useNavigation } from '@react-navigation/core';
 import API from '../../../NGROK'
 import axios from 'axios'
-import { useNavigation } from '@react-navigation/core';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import checkbox from '../../../assets/tabIcons/check.png'
+import checkboxChecked from '../../../assets/tabIcons/checked.png'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Host = () => {
 
     const navigation = useNavigation();
+
+    const [spinner,setSpinner] = useState(false)
+
+    const [userId , setUserId] = useState();
+    const [userToken , setUserToken] = useState();
+    const [username , setUsername] = useState();
 
     const [componentNumb,setComponentNumber]= useState(1);
     const [selected,setSelected] = useState('')
@@ -23,7 +33,14 @@ const Host = () => {
     const [location,setLocation] = useState('')
     const [coordinates,setCoordinates] = useState('')
     const [lessons,setLessons] = useState(0)
-    const [lessonsDetails,setLessonsDetails] = useState(' ')
+    const [lessonsDetails,setLessonsDetails] = useState(null)
+
+    const [wifi,setWifi] = useState(false)
+    const [toilets,setToilets] = useState(false)
+    const [water,setWater] = useState(false)
+    const [shower,setShower] = useState(false)
+    const [parking,setParking] = useState(false)
+    const [fire,setFire] = useState(false)
 
     const data1 = [
         {label: 'Tent camping site'},
@@ -37,34 +54,59 @@ const Host = () => {
         {label: 'Water Sports equipments'},
     ];
 
+    const getData = async () => {
+        try {
+            var name = await AsyncStorage.getItem('username')
+            setUsername(name)
+            var id = await AsyncStorage.getItem('user_id')
+            id = parseInt(id,10)
+            setUserId(id)
+            const token = await AsyncStorage.getItem('token')
+            setUserToken(token)        
+        } catch(e) {
+            console.warn(e)
+        }
+    }
+
     const data2 = [{label: 'No'},{label: 'Yes'}];
 
     const next = () =>{
         if(selected != ''){
         setCategory(selected.label)
-        setSelected('')     
+        setSelected('')
         setComponentNumber(componentNumb+1)
+        getData()
         }
     }    
 
     useEffect(() => {
-        (selected.label === 'Yes')?setLessons(1):setLessons(0)        
+        (selected.label === 'Yes')?setLessons(1):setLessons(0)
     }, [selected])
 
     const create = () => {
-
         if( !category | !name | !location | !coordinates){ 
             return alert('Please fill all the fields.')
         }else if(!priceAdults | !priceKids | !description ){
             return alert('Please fill all the fields.')
         }
+        setSpinner(true)
+
+        var wifiNum= Number(wifi)
+        var waterNum = Number(water)
+        var fireNum = Number(fire)
+        var parkingNum = Number(parking)
+        var showerNum = Number(shower)
+        var toiletsNum = Number(toilets)
+
+        console.warn(wifiNum,waterNum,fireNum)
 
         var price_adults = parseInt(priceAdults,10) 
         var price_kids = parseInt(priceKids,10)
 
         const data = {
             name : name ,
-            hosted_by: 5,
+            hosted_by: userId,
+            hostname: username,
             category : category,
             location : location,
             location_coordinate : coordinates,
@@ -72,32 +114,57 @@ const Host = () => {
             price_kids : price_kids ,
             description : description,
             lessons : lessons,
-            lessons_details : lessonsDetails
+            lessons_details : lessonsDetails,
+            wifi : wifiNum,
+            //date:Date.now(),
+            water : waterNum,
+            shower : showerNum,
+            parking : parkingNum,
+            fire : fireNum,
+            toilets : toiletsNum
         }
-
         console.warn(data)
-    
-        axios.post(`${API}/api/addbusiness`,data)
-        .then(
-            alert('business added successfully')
-            ).catch(err => {
-            console.warn(err)
-            })
+
+
         
+        axios.post(`${API}/api/addbusiness`,data , {
+            headers: {
+                authorization: `Bearer ${userToken}` 
+            }
+          })
+        .then(
+            setSpinner(false),
+            ///console.warn(data),
+            //console.warn(res)
+            alert('Business Added Successfully')
+            )
+        .catch(err => {
+            alert("failed"),
+            console.warn(err)
+            setSpinner(false)
+        })
+    
     }
 
     return (
         
         <View>
             <ScrollView >
+                
             <View style={styles.imageCont}>
                 
-                <ImageBackground source={require('../../../assets/gif/gif1.gif')} style={styles.gif}>
+                <ImageBackground source={require('../../../assets/gif/host.gif')} style={styles.gif}>
                 <Pressable>
                     <Octicons name={'x'} size={30} style={{padding:18,marginTop:5}} color={'black'} onPress={()=>navigation.replace('HomeNavigator')}/>
                 </Pressable>
                 </ImageBackground>
             </View>
+
+            <Spinner
+                visible={spinner}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+            />
             
             
             {componentNumb === 1 &&(
@@ -110,6 +177,8 @@ const Host = () => {
                             style={{marginTop:15}}
                         />
 
+
+
                         <View style={{flexDirection:'row',justifyContent:'center',marginTop:50}}>
                             <Pressable style={styles.backbtn}>
                             <Entypo name={'chevron-left'} size={23} style={{marginRight:'7%'}} color={'#d3d3d3'}/>
@@ -120,7 +189,7 @@ const Host = () => {
                                     }}>Back</Text>
                             </Pressable>
 
-                            <Pressable style={styles.nextbtn} onPress={next}>
+                            <Pressable style={styles.nextbtn} onPress={()=>next()}>
                                 <Text style={{
                                     fontSize: 23,
                                     color: '#f15454',
@@ -188,6 +257,100 @@ const Host = () => {
                         />
                     </View>
 
+                    {/*Amenities */}
+                    <View style={{marginTop:15}}>
+                        <Text style={{...styles.label,marginBottom:10}}>Available amenities :</Text>
+                        <View style={{borderWidth:1,borderColor:'grey',borderRadius:5,flexDirection:'row',marginBottom:10}}>
+                            <View style={{marginLeft:15}}>
+                                <BouncyCheckbox
+                                    style={{ marginTop: 16 }}
+                                    isChecked={wifi}
+                                    text="Wifi"
+                                    textStyle={{
+                                        textDecorationLine: "none",
+                                        }}
+                                    bounceFriction={10}
+                                    size={17}
+                                    //fillColor={'#f15454'}
+                                    disableBuiltInState
+                                    onPress={() => setWifi(!wifi)}
+                                />
+
+                                <BouncyCheckbox
+                                    style={{ marginTop: 16 }}
+                                    isChecked={toilets}
+                                    text="Toilets"
+                                    textStyle={{
+                                        textDecorationLine: "none",
+                                        }}
+                                    bounceFriction={10}
+                                    size={17}
+                                    //fillColor={'#f15454'}
+                                    disableBuiltInState
+                                    onPress={() => setToilets(!toilets)}
+                                />
+
+                                <BouncyCheckbox
+                                    style={{ marginTop: 16 }}
+                                    isChecked={water}
+                                    text="Potable Water"
+                                    textStyle={{
+                                        textDecorationLine: "none",
+                                        }}
+                                    bounceFriction={10}
+                                    size={17}
+                                    //fillColor={'#f15454'}
+                                    disableBuiltInState
+                                    onPress={() => setWater(!water)}
+                                />
+                            </View>
+                        
+                        <View style={{marginLeft:'17%', marginBottom:15}}>
+                            <BouncyCheckbox
+                                    style={{ marginTop: 16 }}
+                                    isChecked={shower}
+                                    text="Shower"
+                                    textStyle={{
+                                        textDecorationLine: "none",
+                                        }}
+                                    bounceFriction={10}
+                                    size={17}
+                                    //fillColor={'#f15454'}
+                                    disableBuiltInState
+                                    onPress={() => setShower(!shower)}
+                                />
+
+                                <BouncyCheckbox
+                                    style={{ marginTop: 16 }}
+                                    isChecked={parking}
+                                    text="Parking"
+                                    textStyle={{
+                                        textDecorationLine: "none",
+                                        }}
+                                    bounceFriction={10}
+                                    size={17}
+                                    //fillColor={'#f15454'}
+                                    disableBuiltInState
+                                    onPress={() => setParking(!parking)}
+                                />
+
+                                <BouncyCheckbox
+                                    style={{ marginTop: 16 }}
+                                    isChecked={fire}
+                                    text="Camp Fire"
+                                    textStyle={{
+                                        textDecorationLine: "none",
+                                        }}
+                                    bounceFriction={10}
+                                    size={17}
+                                    //fillColor={'#f15454'}
+                                    disableBuiltInState
+                                    onPress={() => setFire(!fire)}
+                                />
+                            </View>
+                        </View>
+                    </View>
+
                     {/*Price Adults */}
                     <View style={{marginTop:10}}>
                         <Text style={styles.label}>Price for adults :</Text>
@@ -204,7 +367,7 @@ const Host = () => {
                     </View>
 
                     {/*Price Kids */}
-                    <View style={{marginTop:10}}>
+                    <View style={{marginTop:10, marginBottom:10}}>
                         <Text style={styles.label}>Price for kids :</Text>
                         <TextInput
                             placeholder={'Price'}
@@ -217,6 +380,7 @@ const Host = () => {
                         />
                         <FontAwesome name={'dollar'} size={20} style={styles.icon} />
                     </View>
+
 
                     {/*Lessons */}
                     <View style={{marginTop:10}}>
@@ -280,7 +444,7 @@ const Host = () => {
                                 }}>Back</Text>
                         </Pressable>
 
-                        <Pressable style={styles.nextbtn} onPress={create}>
+                        <Pressable style={styles.nextbtn} onPress={()=>create()}>
                             <Text style={{
                                 fontSize: 23,
                                 color: '#f15454',
@@ -307,7 +471,6 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 3/2,
         // marginHorizontal:5,
-
     },
 
     container:{
@@ -348,6 +511,10 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'center'
+    },
+
+    spinnerTextStyle: {
+        color: '#FFF'
     },
 
     nextbtn:{

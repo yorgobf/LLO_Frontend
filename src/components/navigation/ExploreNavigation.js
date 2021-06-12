@@ -7,7 +7,7 @@ import SearchPageNav from './SearchPageNav';
 
 const Stack = createStackNavigator();
 
-const ExploreNavigation = () => {
+const ExploreNavigation = (props) => {
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -19,9 +19,11 @@ const ExploreNavigation = () => {
             />
 
             <Stack.Screen
-                name={"SearchResults"}
+                name={"Search Results"}
                 component={SearchPageNav}
             />
+                {/* {(props) => <SearchPageNav {...props}/>}
+            </Stack.Screen> */}
         </Stack.Navigator>
     )
 }

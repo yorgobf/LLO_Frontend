@@ -1,23 +1,27 @@
 import { useNavigation } from '@react-navigation/core'
 import axios from 'axios'
 import React, { useState , useEffect} from 'react'
+import { useContext } from 'react'
 import { Dimensions, Image, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, Pressable, ScrollView } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useLayoutEffect } from 'react/cjs/react.production.min'
+import { AuthContext } from '../../../Context'
 import API from '../../../NGROK'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 const width = Dimensions.get('screen').width
 const height =  Dimensions.get('screen').height
 
 const Login = ({navigation}) => {
-
     
     const [username ,setUsername]=useState("");
     const [password ,setPassword]=useState("");
     const [passwordVisibilityIcon, setpasswordVisibilityIcon] = useState('eye-off-outline')
     const [passwordVisibility, setpasswordVisibility] = useState(true);
+    const [spinner,setSpinner] = useState(false)
 
     // const [user,setUser] = useState([]);
     // const [userToken,setUserToken] = useState('')
@@ -27,22 +31,41 @@ const Login = ({navigation}) => {
         setpasswordVisibility(!passwordVisibility)
     }
 
+    //const signIn = useContext(AuthContext)
+
+    const storeData = async (res) => {
+        const userToken=res.data.access_token
+        const userid = res.data.user.id
+        var username = res.data.user.name
+            username = username.charAt(0).toUpperCase() + username.slice(1)
+        const profile = res.data.user.profile
+            try {
+              const useridjson = JSON.stringify(userid)
+              await AsyncStorage.setItem('user_id', useridjson)
+              await AsyncStorage.setItem('username', username)
+              await AsyncStorage.setItem('token', userToken)
+              await AsyncStorage.setItem('profile', profile)
+              navigation.replace("router")
+            } catch (error){
+              console.warn(error)
+            }
+        }
 
     const login = () => {
         if (!username || !password) {
             alert('Please fill in all fields');
             return;
         } else {
+            setSpinner(true)
+
             const data = {
                 name: username,
                 password: password
             }
 
-            
-
             axios.post(`${API}/api/login`, data)
-            .then(
-                res => {
+            .then(res => {
+                setSpinner(false)
                 if(res.data === 'USER ERROR') {console.warn('btn pressed')
                     setUsername('')
                     setPassword('')
@@ -51,15 +74,17 @@ const Login = ({navigation}) => {
                     setPassword('')
                     alert(`Wrong password for user: ${data.name}`)
                 } else {
+                    storeData(res)
+                    //navigation.replace("router",user,userToken)
+
                     //user = setUser(res.data.user);
-                    const userToken=res.data.access_token
-                    var user = res.data.user
                     //console.warn(user,userToken)
-                    navigation.replace("router",user,userToken)
                 }
             }).catch(err => {
                 console.warn(err, 'Failed to send login request')
+                setSpinner(false)
             })
+            
         } 
     }
 
@@ -93,6 +118,12 @@ const Login = ({navigation}) => {
                         style={styles.input}
                     />
                 </View> 
+
+                <Spinner
+                    visible={spinner}
+                    textContent={'Loading...'}
+                    textStyle={styles.spinnerTextStyle}
+                    />
 
                 {/* Password Input */} 
                 <View style={{marginTop: 20}}>
@@ -172,6 +203,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
 
         elevation: 5,
+    },
+
+    spinnerTextStyle: {
+        color: '#FFF'
     },
 
     title:{

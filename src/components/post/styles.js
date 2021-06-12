@@ -2,22 +2,44 @@ import { Dimensions, StyleSheet} from 'react-native'
 
 const styles =StyleSheet.create({
     container: {
-        marginTop:15,
-        margin:20,
-        width: Dimensions.get('screen').width-30
+        marginVertical:7,
+        marginHorizontal : '4%',
+        width : "92%",
+        borderWidth : 1,
+        borderColor : 'lightgrey',
+        borderRadius:15,
+        overflow:'hidden',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        
+        elevation: 3,
+
+    },
+
+    innerContainer:{
+        padding :10,
+        backgroundColor: 'white'
     },
     
     image:{
         height:200,
-        width: Dimensions.get('screen').width,
-        aspectRatio: 16 / 9,
-        resizeMode: 'cover',
+        width:'100%',
+        //height:'70%',
+        //aspectRatio: 13.5 / 20,
+        //aspectRatio: 16 / 9,   
+        //resizeMode: 'cover',
         borderRadius: 15,
     },
 
     description:{
         fontSize: 18,
-        lineHeight: 26
+        lineHeight: 26,
+        marginTop:8,
     },
 
     nbPers: {
@@ -30,19 +52,10 @@ const styles =StyleSheet.create({
         fontSize: 18,
     },
 
-    oldprice: {
-        color: '#5b5b5b',
-        textDecorationLine: 'line-through',
-    },
-
     price:{
         fontWeight: 'bold',
     },
 
-    totalPrice:{
-        color: '#5b5b5b',
-        textDecorationLine: 'underline'
-    },
 
 });
 

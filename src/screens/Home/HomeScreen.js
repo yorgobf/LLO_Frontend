@@ -1,22 +1,58 @@
+import axios from 'axios'
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useEffect ,useState } from 'react'
+import { ScrollView, StyleSheet, Text, View , FlatList ,LogBox } from 'react-native'
+import API from '../../../NGROK'
 import HostHome from '../../components/Host/HostHome'
 import Post from '../../components/post/Post'
 import Categories from './Categories'
 import HomeScreenHeader from './HomeScreenHeader'
 
 const HomeScreen = ({navigation}) => {
+    const [ businesses , setBusinesses] = useState([]);
+    const [ userToken , setUserToken] = useState();
+
+    const getAllBusinesses = () => {
+        axios.get(`${API}/api/list`)
+          .then(res=>{
+              setBusinesses(res.data)
+              console.warn(businesses)
+          })
+          .catch(err => {
+            console.warn(err)
+        })
+    }
+
+    const getData = async () => {
+        try {
+        const token = await AsyncStorage.getItem('token')
+        setUserToken(token)        
+        } catch(e) {
+            console.warn(e)          
+        }
+    }
+
+    useEffect(() => {
+        getAllBusinesses()
+    }, [])
+
     return (
-        <ScrollView style={{marginBottom:70}}>
-            {/* {console.warn(navigation.getParam(user),navigation.getParam(userToken))} */}
-            <HomeScreenHeader />
-            <Categories />
+        <ScrollView style={{marginBottom:75}}>
+
+            <HomeScreenHeader businesses={businesses}/>
+            <Categories businesses={businesses}/>
             <HostHome />
                 <Text style={{fontWeight: '600',fontSize:18,paddingLeft:25}} >
                     Recently Added :
                 </Text>
-            <Post />
-            <Post />
+            <FlatList
+                keyExtractor={(item) => item.id}
+                data={businesses.slice(-10)}
+                renderItem={({item}) => (
+                    <Post
+                        item={item} 
+                    />)}
+            />
         </ScrollView>
     )
 }

@@ -11,6 +11,7 @@ import LocationSearch from '../../screens/LocationSearch/LocationSearch'
 import PostMap from '../post/PostMap'
 import PostScreen from '../../screens/PostScreen/PostScreen'
 import Host from '../../screens/Host/Host'
+import SearchResult from '../../screens/searchResults/SearchResult'
 
 
 const Stack = createStackNavigator();
@@ -34,12 +35,20 @@ const Router = (props) => {
 
                 <Stack.Screen
                 name={"Post"}
-                component={PostScreen}          
+                component={PostScreen}
+                options={{
+                    headerShown: false
+                }}            
                 />
 
                 <Stack.Screen
                 name={"Book"}
                 component={Reservation}          
+                />
+                                
+                <Stack.Screen
+                    name={"Search Result"}
+                    component={SearchResult}
                 />
 
                 <Stack.Screen

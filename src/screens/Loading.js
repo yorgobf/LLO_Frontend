@@ -6,7 +6,7 @@ const Loading = () => {
     return (
         <View style={styles.page}>
             
-            <Image source={require('../../assets/gif/load1.gif')} style={styles.gif} />
+            <Image source={require('../../assets/gif/loading2.gif')} style={styles.gif} />
         </View>
     )
 }
