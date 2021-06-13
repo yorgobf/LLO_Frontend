@@ -58,7 +58,7 @@ const Navigator = () => {
                 }}/>
                 <Tab.Screen 
                 name={"Map"} 
-                component={PostScreen} 
+                component={Maps} 
                 options={{
                     tabBarIcon:({focused}) => (
                         <View style={{alignItems:'center'}}>

@@ -89,8 +89,8 @@ const App = () => {
         
 {/* 
         <ProfileNavigation /> */}
-        {/* <LoginNav /> */}
-        <Router />
+        <LoginNav />
+        {/* <Router /> */}
         {/* <Host /> */}
         {/* <Categories /> */}
         {/* <Router /> */}

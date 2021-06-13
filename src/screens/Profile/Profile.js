@@ -16,6 +16,8 @@ import app from '../../../Base'
 import ImagePicker from 'react-native-image-crop-picker';
 import spinner from 'react-native-loading-spinner-overlay';
 import storage from'@react-native-firebase/storage';
+import axios from 'axios'
+import API from '../../../NGROK'
 
 require('firebase/firestore');
 
@@ -23,38 +25,76 @@ require('firebase/firestore');
 
 const Profile = () => {
 
+    var rn = require('random-number');
+
     const navigation = useNavigation();
 
     const [spinner,setSpinner]=useState(false)
 
-    const [imagePicked, setImagePicked] = useState('../../../assets/images/profile.png');
+    //const [imagePicked, setImagePicked] = useState('../../../assets/images/profile.png');
 
     const [username , setUsername] = useState();
     const [userId , setUserId] = useState();
     const [userToken , setUserToken] = useState();
-    const [imageUrl, setImageUrl] = useState();
+    //const [imageUrl, setImageUrl] = useState();
+    const [user,setUser] = useState([]);
+    const [profile , setProfile] = useState('https:\/\/firebasestorage.googleapis.com\/v0\/b\/lebanonlivedoutdoors.appspot.com\/o\/profile.png?alt=media&token=009102f0-b999-47f6-a5f6-25408b95d4e4');
+
+    const updatePhoto = (photo) =>{
+        const data = {
+            profile:photo
+        }
+        console.warn(data)
+
+        axios.post(`${API}/api/updateprofilephoto/${userId}`, data,  { headers: {authorization: `Bearer ${userToken}`} })
+        .then(
+            alert('Profile photo updated successfully!'),
+            setProfile(photo),
+            updateLocalStorage(photo),
+            setSpinner(false)
+        )
+        .catch(err=>{
+            console.warn(err)
+            setSpinner(false)
+        })
+    }
+
+    const updateLocalStorage = (photo) => {
+        try{
+            AsyncStorage.setItem('profile', photo)
+        } catch (error){
+            console.warn(error)
+          }
+
+    }
 
     const upload = async (image) =>{
+        let random = rn()
         const response = await fetch(image);
         const blob = await response.blob()
-        const task = app.storage().ref(`Profile/1`).put(blob);
+        const task = app.storage().ref(`Profile/${random}`).put(blob);
+        setSpinner(true)
 
         const taskProgress = snapshot =>{
             console.warn(`transferred : ${snapshot.bytesTransferred}`)
         }
 
         const taskCompleted = () => {
-            task.ref.getDownloadURL()
-            .then((snapshot)=>{
-                console.warn(snapshot)
+            task.snapshot.ref.getDownloadURL()
+            .then((snapshot)=>{ 
+                updatePhoto(snapshot)
+                
             })
         }
 
         const taskError = snapshot =>{
             console.warn(snapshot)
+            setSpinner(false)
         }
 
         task.on("state_changed", taskProgress , taskError , taskCompleted)
+
+        //updatePhoto(await task.ref(`Profile/${random}`).getDownloadURL())
 
         // const storageRef = app.storage().ref()
         // var imagesRef = storageRef.child('Profile Photos');
@@ -75,7 +115,7 @@ const Profile = () => {
           cropping: true,
           compressImageQuality: 0.7
         }).then(image => {
-          setImagePicked(image.path);
+          //setImagePicked(image.path);
           upload(image.path)
           bs.current.snapTo(1);
         });
@@ -88,12 +128,8 @@ const Profile = () => {
             cropping: true,
             compressImageQuality: 0.7
         }).then(image => {
-            console.warn(image)
-            //let path = getPlatformPath(image).value
-            //  let fileName = getFileName(image.fileName, path);
-            //uploadImageToStorage(path, fileName);
             upload(image.path)
-            setImagePicked(image.path);
+            //setImagePicked(image.path);
             bs.current.snapTo(1);
         });
     } 
@@ -144,15 +180,19 @@ const Profile = () => {
         var name = await AsyncStorage.getItem('username')
         setUsername(name)
         var profile = await AsyncStorage.getItem('profile')
-        setImagePicked(profile)
+        setProfile(profile)
         var id = await AsyncStorage.getItem('user_id')
         id = parseInt(id,10)
         setUserId(id)
         const token = await AsyncStorage.getItem('token')
         setUserToken(token)        
         } catch(e) {
+            console.warn("getdata", e)
           
         }
+
+
+
     }
 
     const clearAll = async () => {
@@ -168,10 +208,22 @@ const Profile = () => {
         navigation.navigate('Login')     
     }
 
+    const getProfile = () =>{
+        axios.get(`${API}/api/profile/${userId}`, { headers: {authorization: `Bearer ${userToken}`} })
+        .then(res=>{
+            setUser(res.data.user)
+            setProfile(res.data.user.profile)
+        }
+        )
+        .catch(error=>{
+            console.warn("profile" ,error)}
+        )
+    }
+
     useEffect(() => {
         getData()
     }, [])
-
+    
     return (
         <ScrollView>
             <BottomSheet
@@ -188,7 +240,11 @@ const Profile = () => {
             }}>
             <View style={{justifyContent:'center',alignItems:'center'}}>
                 <View style={styles.img}>
-                    <Image source={{uri: imagePicked}} style={{width:130,height:130}} />
+
+                    {/* <Image source={{uri: imagePicked}} style={{width:130,height:130}} /> */}
+
+                    <Image source={{uri : profile}} style={{width:130,height:130}} />
+
                 </View>
                 <Pressable onPress={() => bs.current.snapTo(0)}>
                     <Text style={styles.profileimage}>Edit your profile image</Text>
@@ -202,7 +258,7 @@ const Profile = () => {
                     onPress={()=> navigation.navigate("Change Password",{userId , userToken})}
                     >                  
                         <Text style={styles.locationText}>Change Password</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'45%'}}/>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'43%'}}/>
                 </Pressable>
 
                 <Pressable 

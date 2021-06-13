@@ -35,6 +35,8 @@ const Host = () => {
     const [lessons,setLessons] = useState(0)
     const [lessonsDetails,setLessonsDetails] = useState(null)
 
+    const [phone_num, setPhone_num] = useState()
+
     const [wifi,setWifi] = useState(false)
     const [toilets,setToilets] = useState(false)
     const [water,setWater] = useState(false)
@@ -77,19 +79,28 @@ const Host = () => {
         setComponentNumber(componentNumb+1)
         getData()
         }
-    }    
+    }
+
+    const next2 = () =>{
+        if(!name | !location | !priceAdults | !priceKids | !description ){
+            return alert('Please fill all the fields.')
+        }
+        else if(phone_num.length > 8 ){
+            return alert('phone number should be of 8 numbers')
+        }else{
+            setComponentNumber(componentNumb+1)
+        }
+    }
 
     useEffect(() => {
         (selected.label === 'Yes')?setLessons(1):setLessons(0)
     }, [selected])
 
     const create = () => {
-        if( !category | !name | !location | !coordinates){ 
-            return alert('Please fill all the fields.')
-        }else if(!priceAdults | !priceKids | !description ){
+        if(!coordinates ){ 
             return alert('Please fill all the fields.')
         }
-        setSpinner(true)
+        //setSpinner(true)
 
         var wifiNum= Number(wifi)
         var waterNum = Number(water)
@@ -107,6 +118,7 @@ const Host = () => {
             name : name ,
             hosted_by: userId,
             hostname: username,
+            phone_num:phone_num,
             category : category,
             location : location,
             location_coordinate : coordinates,
@@ -116,7 +128,6 @@ const Host = () => {
             lessons : lessons,
             lessons_details : lessonsDetails,
             wifi : wifiNum,
-            //date:Date.now(),
             water : waterNum,
             shower : showerNum,
             parking : parkingNum,
@@ -124,25 +135,23 @@ const Host = () => {
             toilets : toiletsNum
         }
         console.warn(data)
-
-
         
-        axios.post(`${API}/api/addbusiness`,data , {
-            headers: {
-                authorization: `Bearer ${userToken}` 
-            }
-          })
-        .then(
-            setSpinner(false),
-            ///console.warn(data),
-            //console.warn(res)
-            alert('Business Added Successfully')
-            )
-        .catch(err => {
-            alert("failed"),
-            console.warn(err)
-            setSpinner(false)
-        })
+        // axios.post(`${API}/api/addbusiness`,data , {
+        //     headers: {
+        //         authorization: `Bearer ${userToken}` 
+        //     }
+        //   })
+        // .then(
+        //     setSpinner(false),
+        //     ///console.warn(data),
+        //     //console.warn(res)
+        //     alert('Business Added Successfully')
+        //     )
+        // .catch(err => {
+        //     alert("failed"),
+        //     console.warn(err)
+        //     setSpinner(false)
+        // })
     
     }
 
@@ -234,26 +243,17 @@ const Host = () => {
                         />
                     </View>
 
-                    {/*Google maps coordinates */}
+                    {/*Phone number */}
                     <View style={{marginTop:10}}>
-                        <Text style={styles.label}>Google maps coordinates :</Text>
-                        <View style={{padding:5}}>
-                            <Text style={{color:'grey',fontSize:12}}>1. open the Google Maps app .</Text>
-                            <Text style={{color:'grey',fontSize:12}}>2. Touch and hold an area of the map that isn't labeled. You'll see a red pin appear .</Text>
-                            <Text style={{color:'grey',fontSize:12}}>3. You'll see the coordinates in the search box at the top .</Text>
-                            <Text style={{color:'grey',fontSize:12}}>4. Copy and Paste the coordiates here .</Text>
-                        </View>
+                        <Text style={styles.label}>Phone number :</Text>
                         <TextInput
-                            placeholder={'Coordinates'}
+                            placeholder={'03 333 333'}
                             placeholderTextColor={'lightgrey'}
+                            keyboardType='numeric'
                             underlineColorAndroid='transparent'
-                            onChangeText={coordinates => setCoordinates(coordinates)} 
-                            value={coordinates}
-                            style={{fontSize: 17,
-                                paddingTop:3,
-                                paddingBottom: 8,
-                                borderBottomWidth: 1,
-                                borderColor: 'lightgrey'}}
+                            onChangeText={phone_num => setPhone_num(phone_num)} 
+                            value={phone_num}
+                            style={styles.textInput}                        
                         />
                     </View>
 
@@ -444,7 +444,7 @@ const Host = () => {
                                 }}>Back</Text>
                         </Pressable>
 
-                        <Pressable style={styles.nextbtn} onPress={()=>create()}>
+                        <Pressable style={styles.nextbtn} onPress={()=>next2()}>
                             <Text style={{
                                 fontSize: 23,
                                 color: '#f15454',
@@ -456,6 +456,67 @@ const Host = () => {
                     </View>
                         
                 </View>
+            )}
+
+            {componentNumb === 3 &&(
+                <View style={styles.container}>
+                    
+                <Text style={{fontSize:17,marginTop:'1%'}}>What kind of business do you have? :</Text>
+                
+
+
+
+
+                        
+                    {/*Google maps coordinates */}
+                    <View style={{marginTop:10}}>
+                        <Text style={styles.label}>Google maps coordinates :</Text>
+                        <View style={{padding:5}}>
+                            <Text style={{color:'grey',fontSize:12}}>1. open the Google Maps app .</Text>
+                            <Text style={{color:'grey',fontSize:12}}>2. Touch and hold an area of the map that isn't labeled. You'll see a red pin appear .</Text>
+                            <Text style={{color:'grey',fontSize:12}}>3. You'll see the coordinates in the search box at the top .</Text>
+                            <Text style={{color:'grey',fontSize:12}}>4. Copy and Paste the coordiates here .</Text>
+                        </View>
+                        <TextInput
+                            placeholder={'Coordinates'}
+                            placeholderTextColor={'lightgrey'}
+                            underlineColorAndroid='transparent'
+                            onChangeText={coordinates => setCoordinates(coordinates)} 
+                            value={coordinates}
+                            style={{fontSize: 17,
+                                paddingTop:3,
+                                paddingBottom: 8,
+                                borderBottomWidth: 1,
+                                borderColor: 'lightgrey'}}
+                        />
+                    </View>
+
+                    {/*Buttons Back and Next */}
+                    <View style={{flexDirection:'row',justifyContent:'center',marginTop:50}}>
+                        <Pressable style={styles.backbtn} 
+                            onPress={()=>setComponentNumber(componentNumb-1)}
+                        >
+                        <Entypo name={'chevron-left'} size={23} style={{marginRight:'7%'}} color={'grey'}/>
+                            <Text style={{
+                                fontSize: 23,
+                                color: 'grey',
+                                marginBottom:2
+                                }}>Back</Text>
+                        </Pressable>
+
+
+                        <Pressable style={styles.nextbtn} onPress={()=>create()}>
+                            <Text style={{
+                                fontSize: 23,
+                                color: '#f15454',
+                                marginLeft:'10%',
+                                marginBottom:2
+                                }}>Add</Text>
+                                <Entypo name={'chevron-right'} size={23} style={{marginLeft:'7%'}} color={'#f15454'}/>
+                        </Pressable>
+                    </View>
+              
+        </View>
             )}
                 
             </ScrollView> 

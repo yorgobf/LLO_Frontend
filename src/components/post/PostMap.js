@@ -1,8 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
+import { StyleSheet, Text, useWindowDimensions, View , Image} from 'react-native'
 
 const PostMap = () => {
+
     const width =useWindowDimensions().width;
+    
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer ,{width:width - 50}}>

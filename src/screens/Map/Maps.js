@@ -1,58 +1,87 @@
 import React, { useState } from 'react'
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { FlatList, StyleSheet, Text, View , Image} from 'react-native'
 import MapView from 'react-native-maps';
 import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
 import PostMap from '../../components/post/PostMap';
+import axios from 'axios';
+import API from '../../../NGROK';
 
 const Maps = () => {
-    const [selectedPlaceId,setSelectedPlaceId] = useState(null);
+    const [selectedBusinessId,setSelectedBusinessId] = useState(null);
+    const [ businesses , setBusinesses] = useState([]);
+
     const width = useWindowDimensions().width;
+
     const flatlist = useRef();
+
     const viewConfig = useRef({itemVisiblePercentThreshold: 70});
+
     const onViewChange = useRef(({viewableItems})=>{
         if(viewableItems.length) {
-            const selectedPlaceId =viewableItems[0].item;
-            setSelectedPlaceId(selectedPlaceId.id)
+            const selectedBusinessId =viewableItems[0].item;
+            setSelectedBusinessId(selectedBusinessId.id)
         }
     })
     const map = useRef();
 
     useEffect(() => {
-        if(!selectedPlaceId || !flatlist){
+        if(!selectedBusinessId || !flatlist){
             return;
         }
 
-        const index = places.findIndex(place=> place.id === selectedPlaceId)
+        const index = businesses.findIndex(business=> business.id === selectedBusinessId)
         flatlist.current.scrollToIndex({index})
 
-        const selectedPlace =places[index];
+        const selectedBusiness =businesses[index];
         const region = {
-            latitude: selectedPlace.coordinate.latitude,
-            longitude: selectedPlace.coordinate.longitude,
+            latitude: selectedBusiness.coordinate.latitude,
+            longitude: selectedBusiness.coordinate.longitude,
             latitudeDelta: 0.8,
             longitudeDelta: 0.8
         }
         map.current.animateToRegion(region); 
 
-    }, [selectedPlaceId])
+    }, [selectedBusinessId])
+
+    const getAllBusinesses = () => {
+        axios.get(`${API}/api/list`)
+          .then(res=>{
+              setBusinesses(res.data)
+              console.warn(businesses)
+          })
+          .catch(err => {
+            console.warn(err)
+        })
+    }
+
+    const getData = async () => {
+        try {
+        const token = await AsyncStorage.getItem('token')
+        setUserToken(token)        
+        } catch(e) {
+            console.warn(e)          
+        }
+    }
+
+    useEffect(() => {
+        getAllBusinesses()
+    }, [])
 
     return (
         <View style={{width:'100%',height:'100%'}}>
-            {/* <View src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13242.10374210962!2d35.59860855!3d33.9275987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x666318b93d2d53e6!2sLeMall!5e0!3m2!1sen!2slb!4v1622223054510!5m2!1sen!2slb" style="border:0;" allowfullscreen="" loading="lazy"></View> */}
-            <Text>Map</Text>
-            {/* <MapView
+
+            <MapView
             ref={map}
             style={{width:'100%',height:'100%'}}
             initialRegion={{
             latitude: 33.888630,
             longitude: 35.495480,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.8,
+            longitudeDelta: 0.8,
             }}
-            />  */}
+            /> 
 
             {/*fetch ...
                 data.places.map({place}=> 
@@ -61,13 +90,12 @@ const Maps = () => {
                         coordinate={...}
                         onPress={()=>setSelectedPlaceId{place.id}}
                     } 
-                    />)
+                />)*/}
            
-
-            {/* <View style={{position: 'absolute' , bottom : 10}}>
+             <View style={{position: 'absolute' , bottom : 10}}>
                 <FlatList
                 ref={flatlist}
-                data={places}
+                data={businesses}
                 renderItem={({item}) =><PostMap />}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -77,7 +105,7 @@ const Maps = () => {
                 viewabilityConfig={viewConfig.current}
                 onViewableItemsChanged={onViewChange.current}
                 />
-            </View> */}
+            </View> 
 
         </View>
     )

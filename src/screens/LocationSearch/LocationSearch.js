@@ -4,6 +4,7 @@ import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-na
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import LocationRow from './LocationRow'
+import PlacesInput from 'react-native-places-input';
 
 const LocationSearch = (props) => {
     const [location,setLocation]=useState('');
@@ -14,41 +15,35 @@ const LocationSearch = (props) => {
             {console.warn(props.route.params.testprop)}
             {/*Text Input Component */}
             <View style={{height:300}}>
-            <GooglePlacesAutocomplete
+
+            <PlacesInput
+                placeHolder={"Search by location..."}
+                queryCountries={['lb']}
+                googleApiKey={'AIzaSyCpwJazEPA9R9Kx5d0ea05YUY9T1yqr29A'}
+                onSelect={place => console.log(place)}
+                stylesItem={{...styles.row , borderWidth:1}}
+                stylesItemText={styles.locationText}
+                iconResult={<Ionicons name={'location-sharp'} size={25} color={'#fff'}/>}
+
+            />
+            {/* <GooglePlacesAutocomplete
                 
-                placeholder='Search'
+                
                 onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
                 console.log(data, details);
                 }}
-                 query={{
-                 key: 'AIzaSyDNQN3GUX3kr4POFQ5y6ngpTPi4pwqnBWs',
+
+                query={{
+                 key: 'AIzaSyCpwJazEPA9R9Kx5d0ea05YUY9T1yqr29A',
                  language: 'en',
                 }}
                 onFail={error => console.warn(error)}
                 renderRow={(item)=><LocationRow item={item} />}
-            />
+            /> */}
             </View>
 
-            <TextInput
-            style={styles.textInput}
-            placeholder="Where are you planning to go?"
-            value={location}
-            onChangeText={setLocation}
-            />
 
-        <Pressable 
-            style={styles.row}
-            onPress={()=> navigation.navigate("Search Results")}
-            >
-                <View style={styles.iconContainer}>
-                    <Ionicons name={'location-sharp'} size={28} color={'#fff'}/>
-                </View>                    
-                <Text style={styles.locationText}>Laklouk</Text>
-        </Pressable>
-
-        {/* List of Locations */}
-        
         </View>
     )
 }
@@ -88,7 +83,7 @@ const styles = StyleSheet.create({
     },
 
     locationText: {
-        fontSize: 18
+        fontSize: 17
 
     }
 
