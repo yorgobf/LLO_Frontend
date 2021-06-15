@@ -12,11 +12,14 @@ const Post = (props) => {
 
     return (
         <Pressable onPress={goToPostScreen} style={styles.container}>
-            {console.warn(props)}
+
             
             <View style={styles.innerContainer}>
             {/*image */}
-            <Image source={require('../../../assets/images/glamping.jpeg')} style={styles.image}/>
+            <Image source={{uri : props.item.photo_url}} style={styles.image}/>
+
+                {/*Category*/}
+                <Text style={styles.category} numberOfLines={2}>{props.item.category}</Text>
 
                 {/*Type and Description*/}
                 <Text style={styles.description} numberOfLines={2}>{props.item.description}</Text>

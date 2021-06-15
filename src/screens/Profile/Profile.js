@@ -13,8 +13,9 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import { createRef } from 'react'
 import app from '../../../Base'
 
+
 import ImagePicker from 'react-native-image-crop-picker';
-import spinner from 'react-native-loading-spinner-overlay';
+import Spinner from 'react-native-loading-spinner-overlay';
 import storage from'@react-native-firebase/storage';
 import axios from 'axios'
 import API from '../../../NGROK'
@@ -44,7 +45,7 @@ const Profile = () => {
         const data = {
             profile:photo
         }
-        console.warn(data)
+        //console.warn(data)
 
         axios.post(`${API}/api/updateprofilephoto/${userId}`, data,  { headers: {authorization: `Bearer ${userToken}`} })
         .then(
@@ -76,7 +77,7 @@ const Profile = () => {
         setSpinner(true)
 
         const taskProgress = snapshot =>{
-            console.warn(`transferred : ${snapshot.bytesTransferred}`)
+            //.warn(`transferred : ${snapshot.bytesTransferred}`)
         }
 
         const taskCompleted = () => {
@@ -88,24 +89,12 @@ const Profile = () => {
         }
 
         const taskError = snapshot =>{
-            console.warn(snapshot)
+            //console.warn(snapshot)
             setSpinner(false)
         }
 
         task.on("state_changed", taskProgress , taskError , taskCompleted)
 
-        //updatePhoto(await task.ref(`Profile/${random}`).getDownloadURL())
-
-        // const storageRef = app.storage().ref()
-        // var imagesRef = storageRef.child('Profile Photos');
-        // imagesRef.put(image)
-        // .then(
-        //     console.warn('Uploaded a blob or file!'),
-        //   ) 
-        //   .catch(e=>{
-        //       console.warn(e)
-        //   });
-        // setImageUrl(await imageRef.getDownloadURL())
     }
 
     const takePhotoFromCamera = () => {
@@ -115,7 +104,6 @@ const Profile = () => {
           cropping: true,
           compressImageQuality: 0.7
         }).then(image => {
-          //setImagePicked(image.path);
           upload(image.path)
           bs.current.snapTo(1);
         });
@@ -129,7 +117,6 @@ const Profile = () => {
             compressImageQuality: 0.7
         }).then(image => {
             upload(image.path)
-            //setImagePicked(image.path);
             bs.current.snapTo(1);
         });
     } 
@@ -238,6 +225,13 @@ const Profile = () => {
             <Animated.View style={{margin: 20,
                 opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
             }}>
+
+            <Spinner
+                visible={spinner}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+                />
+
             <View style={{justifyContent:'center',alignItems:'center'}}>
                 <View style={styles.img}>
 
@@ -313,6 +307,11 @@ const styles = StyleSheet.create({
         // marginLeft:'30%',
         marginTop:'5%'
     },
+
+    spinnerTextStyle: {
+        color: '#FFF'
+    },
+
 
     profiletext:{
         marginTop:9,

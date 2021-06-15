@@ -2,19 +2,24 @@ import React, { useState } from 'react'
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, View , Image} from 'react-native'
-import MapView from 'react-native-maps';
+import MapView , {Marker}  from 'react-native-maps';
 import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
 import PostMap from '../../components/post/PostMap';
 import axios from 'axios';
 import API from '../../../NGROK';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DropPin from './DropPin';
+
 
 const Maps = () => {
     const [selectedBusinessId,setSelectedBusinessId] = useState(null);
-    const [ businesses , setBusinesses] = useState([]);
-
     const width = useWindowDimensions().width;
+    
+    const [ businesses , setBusinesses] = useState([]);
+    const [ userToken , setUserToken] = useState();
 
     const flatlist = useRef();
+    var [coordinates,setCoordinates] = useState()
 
     const viewConfig = useRef({itemVisiblePercentThreshold: 70});
 
@@ -24,6 +29,7 @@ const Maps = () => {
             setSelectedBusinessId(selectedBusinessId.id)
         }
     })
+
     const map = useRef();
 
     useEffect(() => {
@@ -35,39 +41,42 @@ const Maps = () => {
         flatlist.current.scrollToIndex({index})
 
         const selectedBusiness =businesses[index];
+        const coordinate = JSON.parse(selectedBusiness.location_coordinate)
         const region = {
-            latitude: selectedBusiness.coordinate.latitude,
-            longitude: selectedBusiness.coordinate.longitude,
-            latitudeDelta: 0.8,
-            longitudeDelta: 0.8
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
+            latitudeDelta: 0.2,
+            longitudeDelta: 0.2
         }
         map.current.animateToRegion(region); 
 
     }, [selectedBusinessId])
 
+
     const getAllBusinesses = () => {
         axios.get(`${API}/api/list`)
           .then(res=>{
               setBusinesses(res.data)
-              console.warn(businesses)
           })
           .catch(err => {
-            console.warn(err)
+            //console.warn(err)
         })
     }
+
 
     const getData = async () => {
         try {
         const token = await AsyncStorage.getItem('token')
         setUserToken(token)        
         } catch(e) {
-            console.warn(e)          
+            //console.warn(e)          
         }
     }
 
     useEffect(() => {
+        getData(),
         getAllBusinesses()
-    }, [])
+    },[])
 
     return (
         <View style={{width:'100%',height:'100%'}}>
@@ -81,29 +90,32 @@ const Maps = () => {
             latitudeDelta: 0.8,
             longitudeDelta: 0.8,
             }}
-            /> 
+            >
 
-            {/*fetch ...
-                data.places.map({place}=> 
-                    <DropPin
-                        isSelected={place.id===selectedPlaceId
-                        coordinate={...}
-                        onPress={()=>setSelectedPlaceId{place.id}}
-                    } 
-                />)*/}
-           
+                {businesses.map( business=> 
+                    <DropPin 
+                    item={business}
+                    onPress={()=>setSelectedBusinessId(business.id)}
+                    isSelected={business.id===selectedBusinessId}
+                    />
+                        
+                )}
+                
+            </MapView>
+            
              <View style={{position: 'absolute' , bottom : 10}}>
                 <FlatList
-                ref={flatlist}
-                data={businesses}
-                renderItem={({item}) =><PostMap />}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={width - 50}
-                snapToAlignment={"center"}
-                decelerationRate={'fast'}
-                viewabilityConfig={viewConfig.current}
-                onViewableItemsChanged={onViewChange.current}
+                    keyExtractor={(item) => item.id}
+                    ref={flatlist}
+                    data={businesses}
+                    renderItem={({item}) =><PostMap item={item} />}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    snapToInterval={width - 50}
+                    snapToAlignment={"center"}
+                    decelerationRate={'fast'}
+                    viewabilityConfig={viewConfig.current}
+                    onViewableItemsChanged={onViewChange.current}
                 />
             </View> 
 

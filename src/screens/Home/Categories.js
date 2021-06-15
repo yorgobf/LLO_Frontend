@@ -14,7 +14,7 @@ const Categories = (props) => {
 
     const campsite = () => {
         let business = props.businesses.filter((item)=>item.category === "Tent camping site")
-        navigation.navigate("Search Results",{item:business})
+        navigation.navigate("Search Result",{item:business})
     }
     
     const glamping = () => {

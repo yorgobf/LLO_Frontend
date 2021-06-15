@@ -7,6 +7,7 @@ import HostHome from '../../components/Host/HostHome'
 import Post from '../../components/post/Post'
 import Categories from './Categories'
 import HomeScreenHeader from './HomeScreenHeader'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
     const [ businesses , setBusinesses] = useState([]);
@@ -16,10 +17,9 @@ const HomeScreen = ({navigation}) => {
         axios.get(`${API}/api/list`)
           .then(res=>{
               setBusinesses(res.data)
-              console.warn(businesses)
           })
           .catch(err => {
-            console.warn(err)
+            //console.warn(err)
         })
     }
 
@@ -28,7 +28,7 @@ const HomeScreen = ({navigation}) => {
         const token = await AsyncStorage.getItem('token')
         setUserToken(token)        
         } catch(e) {
-            console.warn(e)          
+           //console.warn(e)          
         }
     }
 

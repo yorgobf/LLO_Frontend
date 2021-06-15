@@ -1,11 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import MapView , {Marker}  from 'react-native-maps';
 
 const DropPin = (props) => {
+    var coordinates = JSON.parse(props.item.location_coordinate)
     return (
-        <Marker coordinate={{ latitude : latitude , longitude : longitude }} >
+        <Marker coordinate={coordinates} >
                 <View style={{
-                    backgroundColor: isSelected ? 'black' : 'white' , 
+                    backgroundColor: props.isSelected ? 'black' : 'white' , 
                     padding:5 ,
                     borderWidth:1,
                     borderRadius:20,
@@ -14,9 +16,9 @@ const DropPin = (props) => {
                     <Text 
                     style={{
                         fontWeight: 'bold',
-                        color: isSelected ? 'white' : 'Black' 
+                        color: props.isSelected ? 'white' : 'black' 
                     }}>
-                    {price.props}
+                    {props.item.price_adults} $
                     </Text>
                 </View>
         </Marker>

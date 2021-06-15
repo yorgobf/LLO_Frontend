@@ -26,6 +26,12 @@ const styles =StyleSheet.create({
         backgroundColor: 'white'
     },
     
+    category :{
+        marginTop:6,
+        color:'grey',
+        fontSize:14
+    },
+    
     image:{
         height:200,
         width:'100%',
@@ -39,7 +45,8 @@ const styles =StyleSheet.create({
     description:{
         fontSize: 18,
         lineHeight: 26,
-        marginTop:8,
+        marginTop:5,
+        marginBottom:5
     },
 
     nbPers: {

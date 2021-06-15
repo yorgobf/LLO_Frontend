@@ -1,31 +1,42 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { StyleSheet, Text, useWindowDimensions, View , Image} from 'react-native'
+import { StyleSheet,Pressable, Text, useWindowDimensions, View , Image, ShadowPropTypesIOS} from 'react-native'
 
-const PostMap = () => {
+const PostMap = (props) => {
+
+    const navigation = useNavigation()
 
     const width =useWindowDimensions().width;
+
+    const goToPostScreen = () =>{
+        navigation.navigate("Post",{item:props.item})
+    }
     
     return (
-        <View style={styles.container}>
-            <View style={styles.innerContainer ,{width:width - 50}}>
-            {/*image */}
-            <Image source={require('../../../assets/images/glamping.jpeg')} style={styles.image}/>
-            
-            <View style={{flex:1,marginHorizontal:10}}>
-            {/*Number of persons */}
-            <Text style={styles.nbPers}> 2 Persons</Text>
+        <Pressable onPress={goToPostScreen} style={styles.container}>
+            <View style={{...styles.innerContainer, width:width - 50}}>
+                {/*image */}
+                <Image source={{uri : props.item.photo_url}} style={styles.image}/>
+                
+                <View style={{flex:1,marginHorizontal:10}}>
+                    {/*Number of persons */}
+                    <Text style={styles.nbPers}>{props.item.category}</Text>
 
-            {/*Type and Description*/}
-            <Text style={styles.description} numberOfLines={2}>At 'Le camp' we have ... to enjoy your night in the wilderness with your friends and family</Text>
+                    <Text style={{fontWeight:'bold'}}>{props.item.name}</Text>
 
-            {/**Price */}
-            <Text style={styles.prices}>
-                <Text style={styles.price}> 30$ </Text>
-                / night
-            </Text>
+                    {/*Type and Description*/}
+                    <Text style={styles.description} numberOfLines={2}>{props.item.description}</Text>
+
+                    <View style={{}}>
+                        {/**Price */}
+                        <Text style={styles.prices}>
+                        <Text style={styles.price}>{props.item.price_adults} $ </Text>
+                        / Adult
+                        </Text>
+                    </View>
+                </View>
             </View>
-            </View>
-        </View>
+        </Pressable>
     )
 }
 
@@ -33,10 +44,12 @@ export default PostMap
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom:10,
+        marginBottom:80,
         margin:20,
         height: 120,
         padding:5,
+        borderRadius:15,
+        backgroundColor:'white',
         shadowColor: "#000",
         shadowOffset: {
 	    width: 0,
@@ -57,18 +70,20 @@ const styles = StyleSheet.create({
     },
     
     image:{
-        height: '100%',
-        aspectRatio: 1,
+        width:'48%',
+        height: '50%',
+        aspectRatio: 3/2,
         resizeMode: 'cover',
         
     },
 
     description:{
         fontSize: 15,
+        marginBottom:5
     },
 
     nbPers: {
-        marginVertical: 10,
+        marginBottom: 3,
         color: '#5b5b5b',
 
     },

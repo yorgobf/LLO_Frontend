@@ -6606,7 +6606,7 @@
     "react-shallow-renderer" "^16.13.1"
     "scheduler" "^0.20.1"
 
-"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@>= 16.0 || < 17.0", "react@>= 16.x.x", "react@>=16.0", "react@17.0.1":
+"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@>= 16.0 || < 17.0", "react@>= 16.8.0", "react@>= 16.x.x", "react@>=16.0", "react@17.0.1":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
@@ -7857,6 +7857,11 @@
   "integrity" "sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI="
   "resolved" "https://registry.npmjs.org/urix/-/urix-0.1.0.tgz"
   "version" "0.1.0"
+
+"use-places-autocomplete@^1.9.3":
+  "integrity" "sha512-9N05hAAKttkx3e6WVW6MR2q53v2FN2TbmwAAPES26gUINb8P5ZzHvoT4D/E+NLY3qnGehGffYRm1Iflro29GQQ=="
+  "resolved" "https://registry.npmjs.org/use-places-autocomplete/-/use-places-autocomplete-1.9.3.tgz"
+  "version" "1.9.3"
 
 "use-subscription@^1.0.0":
   "integrity" "sha512-Xv2a1P/yReAjAbhylMfFplFKj9GssgTwN7RlcTxBujFQcloStWNDQdc4g4NRWH9xS4i/FDk04vQBptAXoF3VcA=="

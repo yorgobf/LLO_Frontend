@@ -8,6 +8,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MapView, { Marker } from 'react-native-maps';
 
 const PostScreen = (props) => {
 
@@ -21,6 +22,8 @@ const PostScreen = (props) => {
     const [parking,setParking] = useState(props.route.params.item.parking)
     const [fire,setFire] = useState(props.route.params.item.fire)
 
+    const [coordinates,setCoordinates] = useState( JSON.parse(props.route.params.item.location_coordinate))
+
     const goToBookingScreen = () =>{
             navigation.navigate("Book")
     }
@@ -31,8 +34,7 @@ const PostScreen = (props) => {
             <View style={{       }}>
 
             {/*image */}
-                {/* <Image source={require('../../../assets/images/glamping.jpeg')} style={styles.image}/> */}
-                <ImageBackground source={require('../../../assets/images/glamping.jpeg')} style={styles.image}>
+                <ImageBackground source={{uri : props.route.params.item.photo_url}} style={styles.image}>
                 <Pressable>
                     <Octicons name={'x'} size={30} style={{padding:10,marginTop:5}} color={'white'} onPress={()=>navigation.goBack()}/>
                 </Pressable>
@@ -54,12 +56,18 @@ const PostScreen = (props) => {
                     alignItems:'center'
                     }}>
                         <View style={{borderRightColor:'lightgrey',borderRightWidth:1,width:'50%'}}>
+
                             <Text style={{fontWeight:'bold',fontSize:25}}>{props.route.params.item.name}</Text>
                             <View style={{flexDirection:'row', }}>
                                 <Text>Hosted by : </Text>
-                                <Text style={{textDecorationLine: 'underline',marginBottom:7}}>{props.route.params.item.hostname}</Text>
+                                <Text style={{textDecorationLine: 'underline',marginBottom:4}}>{props.route.params.item.hostname}</Text>
+                            </View>
+                            <View style={{flexDirection:'row', }}>
+                                <Ionicons name={'call-sharp'} size={15} color={'#111'} style={{marginTop:3}}/>
+                                <Text style={{marginBottom:6}}> : {props.route.params.item.phone_num} </Text>
+                            </View>
                         </View>
-                        </View>
+                        
                         <View style={{marginLeft:5}}>
                             <Text style={{fontSize:15, fontWeight:'bold' ,marginBottom:3 ,marginLeft:5}}>Category :</Text>
                             <Text style = {{marginBottom:7}} > {props.route.params.item.category}</Text>
@@ -145,7 +153,21 @@ const PostScreen = (props) => {
                 <View style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey'}}>
                     <Text style={{fontSize:17, fontWeight:'bold', marginBottom:10}}>Location on maps :</Text>
                     <View style={styles.map}>
-                        <Text> Map Will be Added Soon</Text>
+                        <MapView
+                            style={{width:'100%',height:'100%'}}
+                            initialRegion={{
+                            longitude: coordinates.longitude,
+                            latitude: coordinates.latitude,
+                            latitudeDelta: 0.04,
+                            longitudeDelta: 0.01,
+                            }}
+                            >
+
+                            <Marker
+                                coordinate={coordinates}
+                            />
+                            
+                        </MapView>
                     </View>                    
                 </View>
 
@@ -158,13 +180,8 @@ const PostScreen = (props) => {
                     <Feather name={'chevron-right'} size={30} style={{marginLeft:'38%'}}/>
                 </View>
 
-            
-            {/*Number of persons */}
-            {/* <Text style={styles.nbPers}> 2 Persons</Text> */}
             </View>
 
-            {/** Total Price */}
-            {/*<Text Style={styles.totalPrice}>60$ total</Text>*/}
         </ScrollView>
 
         <View style={styles.book}>
@@ -172,8 +189,8 @@ const PostScreen = (props) => {
                 <View style={{justifyContent: 'center',marginLeft:15}}>
                     {/**Price */}
                     <Text style={styles.prices}>
-                        <Text style={styles.price}> {props.route.params.item.price_adults}$ </Text>
-                        / night
+                        <Text style={styles.price}> {props.route.params.item.price_adults} $ </Text>
+                        / Adult
                     </Text>
                 </View >
                 <Pressable 
@@ -278,17 +295,22 @@ const styles = StyleSheet.create({
     },
     
     icon: {
-        position: 'absolute',
-        right: '69%',
-        top:10,
+        //position: 'absolute',
+        //right: '69%',
+        marginLeft:5,
+        top:4,
         opacity: 0.5,
         color:'black'
     },
 
     icon1: {
-        position: 'absolute',
-        right: '64%',
-        top:10,
+        // position: 'absolute',
+        // right: '64.5%',
+        // top:10,
+        // opacity: 0.5,
+        // color:'black'
+        marginLeft:5,
+        top:4,
         opacity: 0.5,
         color:'black'
     },

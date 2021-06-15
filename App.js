@@ -38,28 +38,12 @@ const App = () => {
 
   const [isLoading , setIsLoading] = useState(true);
 
-
-  // const [userToken , setUserToken] = useState(null);
-  // const [user , setUser ] = useState([])
-
-  // const authContext = useMemo(()=>({
-  //   signIn: () => {
-  //     setUserToken('sfd');
-  //     setIsLoading(false);
-  //   },
-  //   signOut: () => {
-  //     setUserToken(null);
-  //     setIsLoading(false);
-  //   },
-  //   signUp: () => {
-  //     setIsLoading(false);
-  //   },
-  // }) , [] )
-
   useEffect(() => {
     LogBox.ignoreLogs(['Possible Unhandled Promise'])
     LogBox.ignoreLogs(['Setting a timer'])
     LogBox.ignoreLogs(['VirtualizedLists'])
+    LogBox.ignoreLogs(["expected `string`"])
+    LogBox.ignoreLogs(["each child"])
     setTimeout(()=>{
       setIsLoading(false);
     },3000)
@@ -101,9 +85,7 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  // screen: {
-  //   flex: 1,
-  // },
+
 });
 
 export default App;

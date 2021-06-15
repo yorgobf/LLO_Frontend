@@ -20,12 +20,15 @@ const LocationSearch = (props) => {
                 placeHolder={"Search by location..."}
                 queryCountries={['lb']}
                 googleApiKey={'AIzaSyCpwJazEPA9R9Kx5d0ea05YUY9T1yqr29A'}
-                onSelect={place => console.log(place)}
-                stylesItem={{...styles.row , borderWidth:1}}
-                stylesItemText={styles.locationText}
+                onSelect={place => setLocation(place.result.formatted_address)}
+                //onSelect={place => console.log(place)}
+                //stylesItem={{...styles.row , borderWidth:1}}
+                stylesContainer={{marginTop:17,width:'98%',backgroundColor:'#fff'}}
+                //stylesItemText={styles.locationText}
                 iconResult={<Ionicons name={'location-sharp'} size={25} color={'#fff'}/>}
 
             />
+            {console.warn(location)}
             {/* <GooglePlacesAutocomplete
                 
                 
