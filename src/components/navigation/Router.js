@@ -12,6 +12,7 @@ import PostMap from '../post/PostMap'
 import PostScreen from '../../screens/PostScreen/PostScreen'
 import Host from '../../screens/Host/Host'
 import SearchResult from '../../screens/searchResults/SearchResult'
+import ChatScreen from '../../screens/Chat/ChatScreen'
 
 
 const Stack = createStackNavigator();
@@ -57,6 +58,11 @@ const Router = (props) => {
                 options={{
                     headerShown: false
                 }}            
+                />
+
+                <Stack.Screen
+                name={"Chat Screen"}
+                component={ChatScreen}        
                 />
 
                 <Stack.Screen

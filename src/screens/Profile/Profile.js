@@ -178,8 +178,6 @@ const Profile = () => {
           
         }
 
-
-
     }
 
     const clearAll = async () => {

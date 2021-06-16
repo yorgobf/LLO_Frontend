@@ -9,11 +9,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, { Marker } from 'react-native-maps';
+import app from '../../../Base';
+require('firebase/firestore');
 
 const PostScreen = (props) => {
 
     const navigation = useNavigation()
 
+    const [hostname,setHostname] = useState(props.route.params.item.hostname)
     const [lessons,setLessons] = useState(props.route.params.item.lessons)
     const [wifi,setWifi] = useState(props.route.params.item.wifi)
     const [toilets,setToilets] = useState(props.route.params.item.toilets)
@@ -22,16 +25,29 @@ const PostScreen = (props) => {
     const [parking,setParking] = useState(props.route.params.item.parking)
     const [fire,setFire] = useState(props.route.params.item.fire)
 
+
     const [coordinates,setCoordinates] = useState( JSON.parse(props.route.params.item.location_coordinate))
 
     const goToBookingScreen = () =>{
             navigation.navigate("Book")
     }
 
+    const db = app.firestore()
+    
+    const createChat = async () => {
+        const host = hostname
+        await db
+            .collection('chats')
+            .add({ chatName: host, }).then(()=>{
+            navigation.goBack()
+            }).catch((error)=>alert('error'))
+    }
+
     return (
         <View style={{height:'100%'}}>
         <ScrollView style={styles.mainContainer}>
-            <View style={{       }}>
+            <View >
+                {console.warn(hostname)}
 
             {/*image */}
                 <ImageBackground source={{uri : props.route.params.item.photo_url}} style={styles.image}>
@@ -172,13 +188,13 @@ const PostScreen = (props) => {
                 </View>
 
                 {/*Chat with host */}
-                <View  style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
+                <Pressable onPress={()=>createChat()} style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
                     <View>
                         <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:3 }}>Have a Question?</Text>
                         <Text style={{fontSize:17,marginBottom:5}}>Send {props.route.params.item.hostname} a message!</Text>
                     </View>
                     <Feather name={'chevron-right'} size={30} style={{marginLeft:'38%'}}/>
-                </View>
+                </Pressable>
 
             </View>
 

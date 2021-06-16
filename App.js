@@ -43,7 +43,7 @@ const App = () => {
     LogBox.ignoreLogs(['Setting a timer'])
     LogBox.ignoreLogs(['VirtualizedLists'])
     LogBox.ignoreLogs(["expected `string`"])
-    LogBox.ignoreLogs(["each child"])
+    LogBox.ignoreLogs(["Each child"])
     setTimeout(()=>{
       setIsLoading(false);
     },3000)
@@ -51,13 +51,13 @@ const App = () => {
 
   const Stack = createStackNavigator();
    
-  if(isLoading){
-    return (
-      <View style={{flex:1,justifyContent:'center', alignItems:'center'}} >
-        <Loading /> 
-      </View>
-    )
-  }
+  // if(isLoading){
+  //   return (
+  //     <View style={{flex:1,justifyContent:'center', alignItems:'center'}} >
+  //       <Loading /> 
+  //     </View>
+  //   )
+  // }
 
   return (
       <NavigationContainer>
@@ -73,12 +73,10 @@ const App = () => {
         
 {/* 
         <ProfileNavigation /> */}
-        <LoginNav />
-        {/* <Router /> */}
+        {/* <LoginNav /> */}
+        <Router />
         {/* <Host /> */}
         {/* <Categories /> */}
-        {/* <Router /> */}
-        {/* <Router /> */}
         {/* <Navigator/> */}
       </NavigationContainer>
   );

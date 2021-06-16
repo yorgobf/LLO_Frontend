@@ -12,6 +12,8 @@ if (!firebase.apps.length) {
         messagingSenderId: "44509660415",
         appId: "1:44509660415:web:d1c6dc55ea779ecf10b8ca"
     });
+
+    firebase.firestore().settings({ experimentalForceLongPolling: true });
 }else {
     app = firebase.app();
 }
