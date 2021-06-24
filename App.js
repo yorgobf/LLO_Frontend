@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Profile from './src/screens/Profile/Profile';
 import PostScreen from './src/screens/PostScreen/PostScreen';
 import Reservation from './src/screens/Reserve/Reservation';
+import Request from './src/screens/Profile/Request';
 
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
     LogBox.ignoreLogs(['VirtualizedLists'])
     LogBox.ignoreLogs(["expected `string`"])
     LogBox.ignoreLogs(["Each child"])
+    LogBox.ignoreLogs(["missing keys"])
     setTimeout(()=>{
       setIsLoading(false);
     },3000)
@@ -74,11 +76,9 @@ const App = () => {
 {/* 
         <ProfileNavigation /> */}
 
-        <Reservation />
-        {/* <LoginNav /> */}
+        {/* <Reservation /> */}
+        <LoginNav />
         {/* <Router /> */}
-        {/* <Host /> */}
-        {/* <Categories /> */}
         {/* <Navigator/> */}
       </NavigationContainer>
   );

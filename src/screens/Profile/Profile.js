@@ -22,9 +22,11 @@ import API from '../../../NGROK'
 
 require('firebase/firestore');
 
+const Profile = (username) => {
 
+    let userName = username.username
 
-const Profile = () => {
+    const db = app.firestore()
 
     var rn = require('random-number');
 
@@ -32,12 +34,9 @@ const Profile = () => {
 
     const [spinner,setSpinner]=useState(false)
 
-    //const [imagePicked, setImagePicked] = useState('../../../assets/images/profile.png');
-
-    const [username , setUsername] = useState();
     const [userId , setUserId] = useState();
     const [userToken , setUserToken] = useState();
-    //const [imageUrl, setImageUrl] = useState();
+
     const [user,setUser] = useState([]);
     const [profile , setProfile] = useState('https:\/\/firebasestorage.googleapis.com\/v0\/b\/lebanonlivedoutdoors.appspot.com\/o\/profile.png?alt=media&token=009102f0-b999-47f6-a5f6-25408b95d4e4');
 
@@ -164,8 +163,6 @@ const Profile = () => {
 
     const getData = async () => {
         try {
-        var name = await AsyncStorage.getItem('username')
-        setUsername(name)
         var profile = await AsyncStorage.getItem('profile')
         setProfile(profile)
         var id = await AsyncStorage.getItem('user_id')
@@ -175,7 +172,6 @@ const Profile = () => {
         setUserToken(token)        
         } catch(e) {
             console.warn("getdata", e)
-
         }
 
     }
@@ -205,9 +201,53 @@ const Profile = () => {
         )
     }
 
+    const [requests, setRequests] = useState([]);
+
     useEffect(() => {
         getData()
     }, [])
+    
+    useEffect(() => {
+        db.collection("Reservation Request")
+            .where( "recipient" , "==", userName)
+            .onSnapshot((snapshot) => {  
+            //console.warn('from onSnapshot:', snapshot.docs.data());
+            let request = snapshot.docs.map(doc => 
+                ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                // setRequests(request);
+            let filtered = request.filter(item => item.data.read === false)
+            setRequests(filtered) 
+
+            
+            //console.warn(requests)
+            })
+            //console.warn(requests)
+            // setRequests(filtered)
+    }, [])
+
+    const [notifications, setNotifications] = useState([])
+
+    useEffect(() => {
+        db.collection("Notification")
+            .where( "recipient" , "==", userName)
+            .onSnapshot((snapshot) => {  
+            //console.warn('from onSnapshot:', snapshot.docs.data());
+            let notification = snapshot.docs.map(doc => 
+                ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+            setNotifications(notification) 
+            
+            })
+            console.warn(notifications)
+
+    }, [])
+
+
     
     return (
         <ScrollView>
@@ -235,13 +275,13 @@ const Profile = () => {
 
                     {/* <Image source={{uri: imagePicked}} style={{width:130,height:130}} /> */}
 
-                    <Image source={{uri : profile}} style={{width:130,height:130}} />
+                    <Image source={{uri : profile}} style={{width:120,height:120}} />
 
                 </View>
                 <Pressable onPress={() => bs.current.snapTo(0)}>
                     <Text style={styles.profileimage}>Edit your profile image</Text>
                 </Pressable>
-                <Text style={styles.profiletext}>{username}</Text>
+                <Text style={styles.profiletext}>{userName}</Text>
             </View>
 
             <View style={styles.options}>
@@ -250,12 +290,12 @@ const Profile = () => {
                     onPress={()=> navigation.navigate("Change Password",{userId , userToken})}
                     >                  
                         <Text style={styles.locationText}>Change Password</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'43%'}}/>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'42%'}}/>
                 </Pressable>
 
                 <Pressable 
                     style={styles.row}
-                    //onPress={()=> navigation.navigate("Businesses", {userToken , username , userId})}
+                    onPress={()=> navigation.navigate("Notifications", {notifications})}
                     >                  
                         <Text style={styles.locationText}>Notifications</Text>
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'57%'}}/>
@@ -263,7 +303,7 @@ const Profile = () => {
 
                 <Pressable 
                     style={styles.row}
-                    onPress={()=> navigation.navigate("Businesses", {userId , userToken , username})}
+                    onPress={()=> navigation.navigate("Businesses", {userId , userToken , userName})}
                     >                  
                         <Text style={styles.locationText}>Businesses</Text>
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'60%'}}/>
@@ -271,10 +311,18 @@ const Profile = () => {
 
                 <Pressable 
                     style={styles.row}
+                    onPress={()=> navigation.navigate("Reservation Requests",{item:requests})}
+                    >                  
+                        <Text style={styles.locationText}>Reservations Requests</Text>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>
+                </Pressable>
+
+                <Pressable 
+                    style={styles.row}
                     // onPress={()=> navigation.navigate("SearchResults")}
                     >                  
-                        <Text style={styles.locationText}>Reservations</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'57%'}}/>
+                        <Text style={styles.locationText}>Reservations Schedule</Text>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>
                 </Pressable>
 
                 <Pressable 
@@ -294,8 +342,8 @@ export default Profile
 
 const styles = StyleSheet.create({
     img:{
-        height:130,
-        width:130,
+        height:120,
+        width:120,
         borderWidth:1,
         borderColor:'lightgrey',
         borderRadius:75,
@@ -303,7 +351,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         overflow:'hidden',
         // marginLeft:'30%',
-        marginTop:'5%'
+        marginTop:'2.5%'
     },
 
     spinnerTextStyle: {
@@ -312,7 +360,7 @@ const styles = StyleSheet.create({
 
 
     profiletext:{
-        marginTop:9,
+        marginTop:8,
         fontSize:30
     },
 
@@ -324,12 +372,12 @@ const styles = StyleSheet.create({
     },
 
     options: {
-        marginTop:'10%',
+        marginTop:'6%',
         marginHorizontal:20
     },
 
     row: {
-        height:70,
+        height:65,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 10,

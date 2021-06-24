@@ -4,23 +4,66 @@ import { Calendar } from 'react-native-calendario';
 
 import CalendarPicker from 'react-native-calendar-picker';
 
-const Reservation = () => {
+import { useNavigation } from '@react-navigation/native';
+import firebase from "firebase";
+
+import app from '../../../Base'
+require('firebase/firestore');
+
+const Reservation = (props) => {
+    
+    const navigation = useNavigation()
+
     const [adults,setAdults] = useState(1)
     const [kids,setKids] = useState(0)
     var [date , setDate] = useState()
+
+    var username = props.route.params.username
+    var userId = props.route.params.userId
+    var hostname = props.route.params.hostname
+    var hostId = props.route.params.hostId    
+    var businessName = props.route.params.businessName
     
     const width = Dimensions.get('screen').width
 
-    const reserve = () =>{
+    const db = app.firestore()
+
+    const reserve = async() =>{
+        if(!date){
+            return alert('please pick a date')
+        }
+
         date = JSON.stringify(date)
         date = date.split('T')[0].slice(1);
+
+        await db
+        .collection('Reservation Request')
+        .add({ 
+            read : false,
+            sender : username ,
+            senderId : userId ,
+            recipient : hostname ,
+            recipientId : hostId ,
+            numberAdults : adults ,
+            numberKids : kids ,
+            businessName : businessName,
+            date : date,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+        .then(()=>{
+            alert('Reservation request sent!\nYou will be notified when the host processes the reservation.')
+            navigation.goBack()
+        })
+        .catch((error)=>alert(error))
         
-        data = {
-                   }
+        
     }
 
     return (
         <View style={{justifyContent: 'space-between',height:'100%'}}>
+
+            {/* {console.warn(data)} */}
+
             <View>
             {/*Number of Adultes */}
             <View style={styles.container1}>

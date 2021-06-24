@@ -116,7 +116,8 @@ const Navigator = () => {
                  />
                 <Tab.Screen 
                 name={"Profile"} 
-                component={ProfileNavigation}
+                children={()=><ProfileNavigation username={username}/>}
+                //component={ProfileNavigation}
                 options={{
                     tabBarIcon:({focused}) => (
                         <View style={{alignItems:'center'}}>

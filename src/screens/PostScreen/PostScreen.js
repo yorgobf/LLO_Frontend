@@ -29,13 +29,16 @@ const PostScreen = (props) => {
     const [fire,setFire] = useState(props.route.params.item.fire)
     const [chats , setChats] = useState([])
 
+    const [userId , setUserId] = useState();
+    const [userToken , setUserToken] = useState();
+
     const [username , setUsername] = useState();
 
 
     const [coordinates,setCoordinates] = useState( JSON.parse(props.route.params.item.location_coordinate))
 
     const goToBookingScreen = () =>{
-            navigation.navigate("Book")
+            navigation.navigate("Reservation",{ hostname:props.route.params.item.hostname, username:username , userId:userId , hostId : props.route.params.item.hosted_by , businessName: props.route.params.item.name})
     }
 
     const db = app.firestore()
@@ -94,7 +97,13 @@ const PostScreen = (props) => {
     const getUserData = async () => {
         try {
         var name = await AsyncStorage.getItem('username')
-        setUsername(name)}
+        setUsername(name)
+        var id = await AsyncStorage.getItem('user_id')
+        id = parseInt(id,10)
+        setUserId(id)
+        const token = await AsyncStorage.getItem('token')
+        setUserToken(token)        
+        }
         catch(e) {
             console.warn(e)
         }

@@ -104,6 +104,7 @@ const Login = ({navigation}) => {
 
             {/* Container of the inputs */}
             <View style={styles.container}>
+
                 <Text style={styles.title}>Welcome Back</Text>
 
                 {/* Username Input*/}
@@ -144,8 +145,9 @@ const Login = ({navigation}) => {
                     <Ionicons name={passwordVisibilityIcon} size={25} style={styles.eyeIcon} onPress={onPasswordVisibilityIconToggle}/>
                 </View>
 
+
                 {/* Sign in Button */}
-                <View style={{alignItems:'center'}}>
+                <View style={{alignItems:'center',marginBottom:20}}>
                 <Pressable style={styles.btn} onPress={login} >
                     <Text style={{
                         fontSize: 18,
@@ -182,6 +184,7 @@ const styles = StyleSheet.create({
     },
 
     container:{
+        justifyContent: 'space-between',
         flex:1.5,
         bottom:'1%',
         padding: 20,
@@ -270,7 +273,7 @@ const styles = StyleSheet.create({
     },
 
     btn:{
-        marginBottom:5,
+        marginBottom:8,
         marginTop:'8%',
         backgroundColor:'#f15454',
         alignItems: 'center', 

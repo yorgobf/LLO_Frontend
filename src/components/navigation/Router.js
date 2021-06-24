@@ -43,7 +43,7 @@ const Router = (props) => {
                 />
 
                 <Stack.Screen
-                name={"Book"}
+                name={"Reservation"}
                 component={Reservation}          
                 />
                                 

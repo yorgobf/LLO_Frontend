@@ -111,6 +111,7 @@ const Register = () => {
             <View style={styles.topCont}></View>
             {/* Container of the inputs */}
             <View style={styles.container}>
+
                 <Text style={styles.title}>Join our community!</Text>
 
                 <View style={styles.signUpContainer}>
@@ -188,7 +189,8 @@ const Register = () => {
                     <Ionicons name={passwordVisibilityIcon2} size={25} style={styles.eyeIcon} onPress={onPasswordVisibilityIconToggle2}/>
                 </View>
 
-                {/* Sign in Button */}
+
+                {/* Sign up Button */}
                 <View style={{alignItems:'center'}}>
                 <Pressable style={styles.btn} onPress={register}>
                     <Text style={{
@@ -215,6 +217,8 @@ const styles = StyleSheet.create({
     },
 
     container:{
+        justifyContent:'space-between',
+        //height:'40%',
         flex:1.5,
         padding: 20,
         bottom:20,
@@ -289,7 +293,7 @@ const styles = StyleSheet.create({
     },
 
     btn:{
-        marginBottom:5,
+        marginBottom:20,
         marginTop:40,
         backgroundColor:'#f15454',
         alignItems: 'center', 
