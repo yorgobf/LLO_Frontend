@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { StyleSheet,Pressable, Text, useWindowDimensions, View , Image, ShadowPropTypesIOS} from 'react-native'
+import { StyleSheet,Pressable, Text, useWindowDimensions, View , Image, ShadowPropTypesIOS, Dimensions} from 'react-native'
 
 const PostMap = (props) => {
 
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     container: {
         marginBottom:80,
         margin:20,
-        height: 120,
+        height: Dimensions.get('screen').height-900,
         padding:5,
         borderRadius:15,
         backgroundColor:'white',
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     },
 
     innerContainer: {
+        height: '100%',
         flexDirection:'row',
         borderRadius:10,
         backgroundColor:'white',

@@ -177,7 +177,7 @@ export default Login;
 
 const styles = StyleSheet.create({
     page: {
-        height:Dimensions.get('screen').height-110,
+        height:Dimensions.get('screen').height-60,
         backgroundColor:'#ecf5e0'
     },
 

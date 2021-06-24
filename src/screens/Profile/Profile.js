@@ -175,7 +175,7 @@ const Profile = () => {
         setUserToken(token)        
         } catch(e) {
             console.warn("getdata", e)
-          
+
         }
 
     }
@@ -255,7 +255,7 @@ const Profile = () => {
 
                 <Pressable 
                     style={styles.row}
-                    // onPress={()=> navigation.navigate("SearchResults")}
+                    //onPress={()=> navigation.navigate("Businesses", {userToken , username , userId})}
                     >                  
                         <Text style={styles.locationText}>Notifications</Text>
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'57%'}}/>
@@ -263,10 +263,10 @@ const Profile = () => {
 
                 <Pressable 
                     style={styles.row}
-                    // onPress={()=> navigation.navigate("SearchResults")}
+                    onPress={()=> navigation.navigate("Businesses", {userId , userToken , username})}
                     >                  
-                        <Text style={styles.locationText}>Edit Businesses</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'50%'}}/>
+                        <Text style={styles.locationText}>Businesses</Text>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'60%'}}/>
                 </Pressable>
 
                 <Pressable 

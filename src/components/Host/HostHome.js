@@ -14,7 +14,7 @@ const HostHome = () => {
 
             }}>
             <ImageBackground
-                source={require('../../../assets/images/HostNow.jpg')} 
+                source={require('../../../assets/images/Van.jpg')} 
                 style={{
                     width: Dimensions.get('screen').width-30,
                     height: undefined,
@@ -25,6 +25,8 @@ const HostHome = () => {
                     imageStyle={{ borderRadius: 6}}
                     >
                 <View style={styles.container}>
+                    
+                    <View>
 
                     <Text style={styles.title} numberOfLines={3}>
                     Own anything that may interest our community?
@@ -33,6 +35,7 @@ const HostHome = () => {
                     <Text style={styles.subtitle} numberOfLines={2}>
                     Earn money with Lebanon Lived Outdoors.
                     </Text>
+                    </View>
 
                     <Pressable style={styles.btn}  onPress={() => navigation.navigate("Host")}>
 
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         marginLeft:15,
-        marginTop:10       
+        marginTop:12       
     },
 
     subtitle: {
@@ -68,22 +71,25 @@ const styles = StyleSheet.create({
 
     container: {
             width:'63%',
-            height: '70%',
+            height: '72%',
             top:'15%',
             marginLeft: 25,
             backgroundColor:'white',
-            borderRadius:8
+            borderRadius:8,
+            justifyContent:'space-between'
     },
 
     btn:{ 
-        marginTop: '5%',
-        marginBottom:5,
+        alignSelf:'flex-end',
+        marginBottom:20,
+        width:'70%',
         backgroundColor:'#f15454',
         alignItems: 'center', 
         justifyContent: 'center', 
         height:30 ,
-        marginHorizontal: 20,
-        borderRadius: 18}
+        marginHorizontal:'15%',
+        borderRadius: 18
+    }
 
 
 })

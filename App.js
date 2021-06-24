@@ -10,7 +10,6 @@
 import React, { useState , useEffect , useMemo} from 'react';
 import HomeScreenHeader from './src/screens/Home/HomeScreenHeader'
 import Post from './src/components/post/Post'
-import Reservation from './src/screens/Reserve/Reservation'
 
 import Router from './src/components/navigation/Router'
 
@@ -32,6 +31,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Profile from './src/screens/Profile/Profile';
 import PostScreen from './src/screens/PostScreen/PostScreen';
+import Reservation from './src/screens/Reserve/Reservation';
 
 
 const App = () => {
@@ -73,8 +73,10 @@ const App = () => {
         
 {/* 
         <ProfileNavigation /> */}
+
+        <Reservation />
         {/* <LoginNav /> */}
-        <Router />
+        {/* <Router /> */}
         {/* <Host /> */}
         {/* <Categories /> */}
         {/* <Navigator/> */}

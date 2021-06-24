@@ -201,7 +201,7 @@ const Host = () => {
             setSpinner(false),
             ///console.warn(data),
             //console.warn(res)
-            alert('Business Added Successfully'),
+            alert('Business Added Successfully\nYou can check the post in your profile'),
             navigation.replace('HomeNavigator')
             )
         .catch(err => {
@@ -319,8 +319,8 @@ const Host = () => {
                     {/*Amenities */}
                     <View style={{marginTop:15}}>
                         <Text style={{...styles.label,marginBottom:10}}>Available amenities :</Text>
-                        <View style={{borderWidth:1,borderColor:'grey',borderRadius:5,flexDirection:'row',marginBottom:10}}>
-                            <View style={{marginLeft:15}}>
+                        <View style={{borderWidth:1,borderColor:'grey',justifyContent:'space-between',borderRadius:5,flexDirection:'row',marginBottom:10}}>
+                            <View style={{marginLeft:20}}>
                                 <BouncyCheckbox
                                     style={{ marginTop: 16 }}
                                     isChecked={wifi}
@@ -364,7 +364,7 @@ const Host = () => {
                                 />
                             </View>
                         
-                        <View style={{marginLeft:'17%', marginBottom:15}}>
+                        <View style={{marginRight:20, alignSelf:'flex-end' , marginBottom:15}}>
                             <BouncyCheckbox
                                     style={{ marginTop: 16 }}
                                     isChecked={shower}

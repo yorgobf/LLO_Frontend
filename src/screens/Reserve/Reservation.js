@@ -1,11 +1,26 @@
 import React, {useState} from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Calendar } from 'react-native-calendario';
+
+import CalendarPicker from 'react-native-calendar-picker';
 
 const Reservation = () => {
-    const [adults,setAdults] = useState(0)
+    const [adults,setAdults] = useState(1)
     const [kids,setKids] = useState(0)
+    var [date , setDate] = useState()
+    
+    const width = Dimensions.get('screen').width
+
+    const reserve = () =>{
+        date = JSON.stringify(date)
+        date = date.split('T')[0].slice(1);
+        
+        data = {
+                   }
+    }
+
     return (
-        <View style={{justifyContent: 'space-between', height: '100%'}}>
+        <View style={{justifyContent: 'space-between',height:'100%'}}>
             <View>
             {/*Number of Adultes */}
             <View style={styles.container1}>
@@ -30,6 +45,7 @@ const Reservation = () => {
                     </Pressable>
 
                 </View>
+
             </View>
 
             {/*Number of Kids */}
@@ -58,6 +74,26 @@ const Reservation = () => {
                 </View>
             </View>
             </View>
+            {/* {console.warn(date)} */}
+
+            {/*Calendar */}
+            <View style={styles.calendarContainer}>
+
+                    <CalendarPicker
+                        onDateChange={date=>setDate(date)}
+                        selectedDayStyle={{backgroundColor:'#f15454',}}
+                        selectedDayTextColor="#FFFFFF"
+                        startFromMonday={true}
+                        minDate={new Date()}
+                        todayBackgroundColor="#eeeeee"
+                        todayTextStyle={{color:'#6d95da',fontWeight:'bold'}}
+                        textStyle={{color:'#333333'}}
+                        width={width-50}
+                        disabledDatesTextStyle={{color:'lightgrey'}}
+                        monthTitleStyle={{color:'#f15454'}}
+                        yearTitleStyle={{color:'#f15454'}}
+                    />
+                </View>
 
             <View>
                 <Pressable style={{
@@ -67,8 +103,10 @@ const Reservation = () => {
                     justifyContent: 'center', 
                     height:50 ,
                     marginHorizontal: 20,
-                    borderRadius: 10
-            }}>
+                    borderRadius: 10,
+                }}
+                onPress={()=>reserve()}
+            >
                     <Text style={{
                         fontSize: 20,
                         fontWeight:'bold',
@@ -101,6 +139,20 @@ const styles = StyleSheet.create({
     container2: {
         flexDirection:'row',
         alignItems: 'center',
+    },
+
+    calendarContainer:{
+        //marginTop:20,
+        borderColor:'grey',
+        borderRadius:10,
+        borderWidth:1,
+        width:Dimensions.get('screen').width-40,
+        marginHorizontal:20,
+        overflow:'hidden',
+        height:300,
+        alignItems:'center',
+        justifyContent:'center',
+        marginBottom:100
     },
 
     button: {

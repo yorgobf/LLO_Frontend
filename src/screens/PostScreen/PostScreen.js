@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core'
-import React , { useState } from 'react'
+import React , { useState , useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, ImageBackground , Image , Button, Pressable } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -7,9 +7,12 @@ import Octicons from 'react-native-vector-icons/Octicons'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MapView, { Marker } from 'react-native-maps';
-import app from '../../../Base';
+import app from '../../../Base'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
+import API from '../../../NGROK'
+
 require('firebase/firestore');
 
 const PostScreen = (props) => {
@@ -24,6 +27,9 @@ const PostScreen = (props) => {
     const [shower,setShower] = useState(props.route.params.item.shower)
     const [parking,setParking] = useState(props.route.params.item.parking)
     const [fire,setFire] = useState(props.route.params.item.fire)
+    const [chats , setChats] = useState([])
+
+    const [username , setUsername] = useState();
 
 
     const [coordinates,setCoordinates] = useState( JSON.parse(props.route.params.item.location_coordinate))
@@ -34,20 +40,74 @@ const PostScreen = (props) => {
 
     const db = app.firestore()
     
-    const createChat = async () => {
-        const host = hostname
+    const createChat = async (username , hostname) => {
         await db
-            .collection('chats')
-            .add({ chatName: host, }).then(()=>{
-            navigation.goBack()
-            }).catch((error)=>alert('error'))
+        .collection('chats')
+        .add({ 
+            participants: [ hostname , username]  })
+        .then(()=>{
+            alert('chat Added')
+        //navigation.goBack()
+        })
+        .catch((error)=>alert(error))
     }
+
+    const deletePost = (id) =>{
+
+        axios.delete(`${API}/api/delete/${id}`)
+        .then(res=>{
+            alert(res.data.message),
+            navigation.goBack()
+        })
+        .catch(err =>console.warn(err))
+        
+
+    }
+    
+
+    const checkChat = async (username , hostname) => {
+        
+        var exist = false;
+        let create 
+        
+        let u 
+        await db.
+                collection("chats")
+                .where( "participants" , "array-contains", username)
+                .onSnapshot(
+                    (snapshot) =>{
+                        setChats( snapshot.docs.map((doc)=>({
+                            data:doc.data()
+                        }))
+                            //console.warn(exist)
+                            //exist = n.includes(hostname)
+                        )
+                        //return alert('Chat already exist!\nGo to the chat Screen to chat with the host')
+                    }
+                )
+                .catch((error)=>alert(error))
+
+            console.warn(chats)
+
+    }
+
+    const getUserData = async () => {
+        try {
+        var name = await AsyncStorage.getItem('username')
+        setUsername(name)}
+        catch(e) {
+            console.warn(e)
+        }
+    }
+    
+    useEffect(() => {
+        getUserData()
+    }, [])
 
     return (
         <View style={{height:'100%'}}>
         <ScrollView style={styles.mainContainer}>
             <View >
-                {console.warn(hostname)}
 
             {/*image */}
                 <ImageBackground source={{uri : props.route.params.item.photo_url}} style={styles.image}>
@@ -188,7 +248,7 @@ const PostScreen = (props) => {
                 </View>
 
                 {/*Chat with host */}
-                <Pressable onPress={()=>createChat()} style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
+                <Pressable onPress={()=>checkChat(username , hostname)} style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
                     <View>
                         <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:3 }}>Have a Question?</Text>
                         <Text style={{fontSize:17,marginBottom:5}}>Send {props.route.params.item.hostname} a message!</Text>
@@ -200,24 +260,48 @@ const PostScreen = (props) => {
 
         </ScrollView>
 
+        {/*Book  */}
         <View style={styles.book}>
-            <View style={{flexDirection:'row'}}>
-                <View style={{justifyContent: 'center',marginLeft:15}}>
+            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                <View style={{justifyContent: 'center',marginLeft:30}}>
                     {/**Price */}
                     <Text style={styles.prices}>
                         <Text style={styles.price}> {props.route.params.item.price_adults} $ </Text>
                         / Adult
                     </Text>
                 </View >
+                {(username === hostname )?(
+                <Pressable 
+                onPress={()=>deletePost(props.route.params.item.id)}
+                style={{                    
+                    backgroundColor:'red',
+                    width:125,
+                    alignSelf:'flex-end',
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    height:45 ,
+                    //position:'relative',
+                    marginRight : 30,
+                    borderRadius: 10,
+                    
+            }}>
+                    <Text style={{
+                        fontSize: 20,
+                        fontWeight:'bold',
+                        color: 'white'
+                        }}>Delete</Text>
+                </Pressable>
+            ):(
                 <Pressable 
                 onPress={goToBookingScreen}
                 style={{                    
                     backgroundColor:'#f15454',
                     width:125,
+                    alignSelf:'flex-end',
                     alignItems: 'center', 
                     justifyContent: 'center', 
                     height:45 ,
-                    marginLeft : '13%',
+                    marginRight : 30,
                     borderRadius: 10,
             }}>
                     <Text style={{
@@ -226,8 +310,10 @@ const PostScreen = (props) => {
                         color: 'white'
                         }}>Book</Text>
                 </Pressable>
+            )
+            }
+            
             </View>
-
 
         </View>
         
@@ -284,8 +370,8 @@ const styles = StyleSheet.create({
 
     prices: {
         fontSize: 18,
-        marginLeft: 20,
-        marginRight: '15%'
+        //marginLeft: '6%',
+        //marginRight: '15%'
     },
 
     oldprice: {

@@ -210,7 +210,7 @@ export default Register
 
 const styles = StyleSheet.create({
     page: {
-        height:Dimensions.get('screen').height+25,
+        height:Dimensions.get('screen').height+95,
         backgroundColor:'#ecf5e0'
     },
 
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
 
     btn:{
         marginBottom:5,
-        marginTop:50,
+        marginTop:40,
         backgroundColor:'#f15454',
         alignItems: 'center', 
         justifyContent: 'center', 

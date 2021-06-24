@@ -19,7 +19,8 @@ const Post = (props) => {
             <Image source={{uri : props.item.photo_url}} style={styles.image}/>
 
                 {/*Category*/}
-                <Text style={styles.category} numberOfLines={2}>{props.item.category}</Text>
+                <Text style={styles.category} >{props.item.category}</Text>
+                <Text style={{fontWeight:'bold', marginTop:6,fontSize:20}}>{props.item.name}</Text>
 
                 {/*Type and Description*/}
                 <Text style={styles.description} numberOfLines={2}>{props.item.description}</Text>

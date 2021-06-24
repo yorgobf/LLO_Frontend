@@ -5,9 +5,10 @@ import Post from '../../components/post/Post'
 
 const SearchResult = (props) => {
     return (
-        <ScrollView style={{marginBottom:75}}>
+        <ScrollView style={{}}>
+            {/* {console.warn(props.route.params.item)} */}
 
-            {!props.route.params.item[0]  &&(
+            {!props.route.params.item[0]  && (
                 <View style={{
                     width:Dimensions.get('screen').width,
                     height:Dimensions.get('screen').height-300,

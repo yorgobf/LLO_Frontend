@@ -5,12 +5,26 @@ import Feather from 'react-native-vector-icons/Feather'
 import { NavigationEvents } from 'react-navigation'
 import firebase from "firebase";
 import app from '../../../Base';
+import axios from 'axios'
+import API from '../../../NGROK'
 require('firebase/firestore');
 
-const CustomListItem = ({id , chatName}) => {
+const CustomListItem = ({id , username , participants}) => {
     const navigation = useNavigation()
     const [ chatMessages , setChatMessages] = useState([])
     const db = app.firestore();
+    const [secondUser,setSecondUser] = useState()
+    const  [photo , setPhoto] = useState('https://firebasestorage.googleapis.com/v0/b/lebanonlivedoutdoors.appspot.com/o/profile.png?alt=media&token=009102f0-b999-47f6-a5f6-25408b95d4e4')
+    let otherUser = participants.filter((name)=> name != username.username)
+
+    useEffect(() => {
+        axios.get(`${API}/api/getUser/${otherUser}`)
+        .then(res=>{
+            setSecondUser(res.data),
+            setPhoto(res.data.profile)}
+        )
+        .catch(err=>console.warn("cus" , err))
+    }, [])
 
     useEffect(() => {
         const unsubscribe = db.collection('chats')
@@ -20,30 +34,37 @@ const CustomListItem = ({id , chatName}) => {
                                 .onSnapshot(
                                     (snapshot)=> setChatMessages(
                                         snapshot.docs.map(
-                                            (doc)=>doc.data())));
+                                           (doc)=>doc.data())));
 
         return unsubscribe;
-    },)
+    },[])
+
     return (
         <View>
-            <Pressable style={styles.container} onPress={()=>navigation.navigate('Chat Screen',{chatName , id })}>
+            <Pressable style={styles.container} onPress={()=>navigation.navigate('Chat Screen',{secondUser , id })}>
                 <View>
                     <Image
                         style={styles.image}
                         source={{
-                            uri: `https://firebasestorage.googleapis.com/v0/b/lebanonlivedoutdoors.appspot.com/o/Profile%2F0.9644275800425436?alt=media&token=8f724984-c0e2-42b6-bf80-9a807f9b8861`
+                            uri: photo
                         }}
                     />
                 </View>
                 < View style={styles.container2}>
                     <View>
                         <Text style={styles.name}>
-                            {chatName}
+                            {otherUser}
                         </Text>
 
-                        <Text style={styles.message}>
-                            {chatMessages?.[0]?.message}
-                        </Text>
+                            {(chatMessages?.[0]?.displayName === username.username)?
+                            (
+                                <View style={{flexDirection:'row',alignItems:'center',marginTop:3}}>
+                                    <Text>You : </Text>
+                                    <Text style={styles.message}>{chatMessages?.[0]?.message}</Text>
+                                </View>
+                            ):
+                            (<Text style={styles.message}>{chatMessages?.[0]?.message}</Text>)
+                            }
 
                     </View>
                     <Feather name={'chevron-right'} size={20} style={styles.icon}/>
@@ -86,9 +107,9 @@ const styles = StyleSheet.create({
     },
 
     message: {
-        fontSize: 17,
+        fontSize: 16,
         color: 'grey',
-        marginBottom:5
+        //marginBottom:5
 
     },
 

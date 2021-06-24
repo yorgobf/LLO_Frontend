@@ -27,7 +27,7 @@ const styles =StyleSheet.create({
     },
     
     category :{
-        marginTop:6,
+        marginTop:7,
         color:'grey',
         fontSize:14
     },
@@ -45,7 +45,7 @@ const styles =StyleSheet.create({
     description:{
         fontSize: 18,
         lineHeight: 26,
-        marginTop:5,
+        marginTop:3,
         marginBottom:5
     },
 

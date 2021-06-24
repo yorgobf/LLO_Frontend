@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useState, useEffect} from 'react'
 import { StyleSheet, Text, View ,Image, TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createStackNavigator } from '@react-navigation/stack'
@@ -20,11 +20,29 @@ import PostScreen from '../../screens/PostScreen/PostScreen'
 import ProfileNavigation from './ProfileNavigation'
 import HostNavigator from './HostNavigator'
 import Host1 from './Host1'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Navigator = () => {
+    const [username , setUsername] = useState();
+
+    
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+            var name = await AsyncStorage.getItem('username')
+            setUsername(name)}
+            catch(e) {
+                console.warn(e)
+            }
+        }
+        
+        getUserData()
+
+    }, [])
+
     const navigation = useNavigation();
     return (
             <Tab.Navigator
@@ -85,7 +103,8 @@ const Navigator = () => {
                 />
                 <Tab.Screen 
                 name={"Chat"} 
-                component={Chat}
+                //component={Chat}
+                children={()=><Chat username={username}/>}
                 options={{
                     tabBarIcon:({focused}) => (
                         <View style={{alignItems:'center'}}>

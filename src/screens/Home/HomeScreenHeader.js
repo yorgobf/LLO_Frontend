@@ -1,33 +1,61 @@
-import React from 'react'
-import { ImageBackground, Pressable, Text, View , Image, Dimensions, StyleSheet  } from 'react-native';
+import React , { useState } from 'react'
+import { ImageBackground, Pressable, Text, View , Image, TextInput , Dimensions, StyleSheet  } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import { useNavigation } from '@react-navigation/native';
 
-const HomeScreenHeader = (props ) => {
+const HomeScreenHeader = (props) => {
    const navigation = useNavigation();
+   const [ businessName , setBusinessName ] = useState()
+//    const [filteredBusinesses , setFilteredBusinesses] = useState([])
+
+   const searchByName = (name) =>{
+    //    setFilteredBusiness()
+    let filtered = props.businesses.filter(item => item.name.toLowerCase().includes(name.toLowerCase()))
+    // console.warn(props.businesses)
+    setBusinessName('')
+    navigation.navigate("Search Result",{item:filtered})
+   }
 
     return (
         <View style={styles.container}>
-            <Pressable
+            {/* {console.warn(props.businesses[1].name)} */}
+            <View
                 style={styles.buttonSearch}
-                onPress={() => navigation.navigate("Location",{testprop: "Hello World"})}>
-                    <View style={{marginRight: "40%"}}>
-                        <Text style={styles.searchText}>
-                            Search by location...
-                        </Text>
+                //onPress={}
+                >
+                    <View style={{alignItems:'center',flexDirection:'row'}}>
+                        <TextInput
+                        placeholder={'Search by name...'}
+                        maxLength={50}
+                        numberOfLines={1}
+                        placeholderTextColor={'black'}
+                        value={businessName}
+                        onChangeText={businessName=>setBusinessName(businessName)}
+                        style={{fontSize:15,fontWeight:'bold',flexDirection:'row',width:150}}
+                        onSubmitEditing={()=>searchByName(businessName)}
+                        >
+                            
+                        </TextInput>
+                        <Pressable
+                        style={{marginLeft: '45%'}}
+                        onPress={()=>searchByName(businessName)}
+                        >
+                            <Fontisto name="search" size={25}  color={"#f15454"}  />
+                        </Pressable>
                     </View>
-                    <View>
+                    {/* <View>
                         <Fontisto name="search" size={25} color={"#f15454"}  />
-                    </View>
-            </Pressable>
-            
-            <ImageBackground source={require('../../../assets/gif/gif1.gif')} style={styles.gif}>
-                {/*title*/}
-                <Text style={styles.title}>
-                    Lebanon Lived Outdoors
-                </Text>
+                    </View> */}
+            </View>
+            <View style={{flexDirection:'column'}}>
+                <ImageBackground source={require('../../../assets/gif/gif1.gif')} style={styles.gif}>
+                    {/*title*/}
+                    <Text style={styles.title}>
+                        Lebanon Lived Outdoors
+                    </Text>
 
-            </ImageBackground>
+                </ImageBackground>
+            </View>
         </View>
     )
 }
@@ -50,12 +78,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: undefined,
         aspectRatio: 3/2,
-        marginTop:100
+        marginTop:100,
+        flexDirection:'column', 
         // marginHorizontal:5,
     },
 
     title: {
         marginTop:15,
+        flexDirection:'column', 
         fontSize: 60,
         fontWeight: 'bold',
         color: 'white',
@@ -64,7 +94,9 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         textShadowColor: 'rgba(0, 0, 0, 1)',
         textShadowOffset: {width: -1, height: 1},
-        textShadowRadius: 10
+        textShadowRadius: 10,
+        // alignContent:'center'
+
     },
 
     buttonSearch:{

@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen = ({navigation}) => {
     const [ businesses , setBusinesses] = useState([]);
     const [ userToken , setUserToken] = useState();
+    const [username , setUsername] = useState();
 
     const getAllBusinesses = () => {
         axios.get(`${API}/api/list`)
@@ -26,7 +27,9 @@ const HomeScreen = ({navigation}) => {
     const getData = async () => {
         try {
         const token = await AsyncStorage.getItem('token')
-        setUserToken(token)        
+        setUserToken(token)
+        var name = await AsyncStorage.getItem('username')
+        setUsername(name) 
         } catch(e) {
            //console.warn(e)          
         }
@@ -34,6 +37,7 @@ const HomeScreen = ({navigation}) => {
 
     useEffect(() => {
         getAllBusinesses()
+        getData()
     }, [])
 
     return (
@@ -49,9 +53,10 @@ const HomeScreen = ({navigation}) => {
                 keyExtractor={(item) => item.id}
                 data={businesses.slice(-10)}
                 renderItem={({item}) => (
+                    (username!==item.hostname)?(
                     <Post
                         item={item} 
-                    />)}
+                    />):(null))}
             />
         </ScrollView>
     )
