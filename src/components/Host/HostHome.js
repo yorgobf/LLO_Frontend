@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'grey',
         marginLeft:15,      
+        marginBottom:5
     },
 
     container: {

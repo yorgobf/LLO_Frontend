@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     sender: {
         padding:15,
         backgroundColor:"#2868e6",
-
+        alignSelf:"flex-end",
         borderRadius:20,
         marginRight:15,
         marginBottom:20,

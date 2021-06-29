@@ -6,6 +6,8 @@ import EditProfile from '../../screens/Profile/EditProfile';
 import Businesses from '../../screens/Profile/Businesses';
 import ReservationRequest from '../../screens/Profile/ReservationRequest';
 import Notifications from '../../screens/Profile/Notifications';
+import ReservationSchedule from '../../screens/Profile/ReservationSchedule';
+import Schedule from '../../screens/Profile/Schedule';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +42,16 @@ const ProfileNavigation = (username) => {
                 name={"Notifications"}
                 component={Notifications}
             />
+
+            <Stack.Screen
+                name={"Reservations"}
+                component={ReservationSchedule}
+            />  
+
+            <Stack.Screen
+                name={"Schedule"}
+                component={Schedule}
+            />  
         </Stack.Navigator>
     )
 }

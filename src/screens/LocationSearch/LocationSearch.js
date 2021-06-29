@@ -12,7 +12,7 @@ const LocationSearch = (props) => {
 
     return (
         <View style={styles.container}>
-            {console.warn(props.route.params.testprop)}
+            
             {/*Text Input Component */}
             <View style={{height:300}}>
 

@@ -28,7 +28,7 @@ const Post = (props) => {
                 {/**Price */}
                 <Text style={styles.prices}>
                     <Text style={styles.price}>{props.item.price_adults} $ </Text>
-                    / adult
+                    / Adult
                 </Text>
             </View>
             {/** Total Price */}

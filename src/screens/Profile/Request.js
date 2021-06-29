@@ -4,6 +4,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import firebase from "firebase";
 import app from '../../../Base'
+import axios from 'axios';
+import API from '../../../NGROK';
 require('firebase/firestore');
 
 const Request = (props) => {
@@ -11,7 +13,26 @@ const Request = (props) => {
 
     const db = app.firestore()
 
+    const save = () =>{
+        const data = {
+            userId :  props.item.data.senderId,
+            username : props.item.data.sender,
+            businessName : props.item.data.businessName,
+            businessId : props.item.data.businessId,
+            number_adults: props.item.data.numberAdults,
+            number_kids: props.item.data.numberKids,
+            date : props.item.data.date,
+        }
+
+        axios.post(`${API}/api/addreservation`,data)
+        .then(
+            
+        )
+        .catch(err=>console.warn(err))
+    }
+
     const accept = async() =>{
+        save()
         await db
         .collection('Reservation Request')
         .doc(props.item.id)

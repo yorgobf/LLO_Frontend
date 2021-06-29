@@ -206,10 +206,13 @@ const Profile = (username) => {
     useEffect(() => {
         getData()
     }, [])
+
+    const[numRequests , setNumRequests] = useState(0)
     
     useEffect(() => {
         db.collection("Reservation Request")
             .where( "recipient" , "==", userName)
+            .orderBy('timestamp','desc')
             .onSnapshot((snapshot) => {  
             //console.warn('from onSnapshot:', snapshot.docs.data());
             let request = snapshot.docs.map(doc => 
@@ -217,8 +220,10 @@ const Profile = (username) => {
                     id:doc.id,
                     data:doc.data()
                 }))
-                // setRequests(request);
+                //  setRequests(request);
             let filtered = request.filter(item => item.data.read === false)
+            let length = filtered.length
+            setNumRequests(length)
             setRequests(filtered) 
 
             
@@ -229,10 +234,12 @@ const Profile = (username) => {
     }, [])
 
     const [notifications, setNotifications] = useState([])
+    const [numNotifications , setNumNotifications] = useState(0)
 
     useEffect(() => {
         db.collection("Notification")
             .where( "recipient" , "==", userName)
+            .orderBy('timestamp','desc')
             .onSnapshot((snapshot) => {  
             //console.warn('from onSnapshot:', snapshot.docs.data());
             let notification = snapshot.docs.map(doc => 
@@ -240,17 +247,23 @@ const Profile = (username) => {
                     id:doc.id,
                     data:doc.data()
                 }))
+                let filtered = notification.filter(item => item.data.read === false)
+                let length = filtered.length
+                setNumNotifications(length)
             setNotifications(notification) 
             
             })
-            console.warn(notifications)
+            //console.warn(notifications)
 
     }, [])
 
 
     
     return (
-        <ScrollView>
+        <ScrollView style={{marginBottom:70}}>
+
+            {/* {console.warn(reservations)} */}
+            
             <BottomSheet
                 ref={bs}
                 snapPoints={[330, 0]}
@@ -284,7 +297,10 @@ const Profile = (username) => {
                 <Text style={styles.profiletext}>{userName}</Text>
             </View>
 
+
             <View style={styles.options}>
+
+                {/*Change Password */}
                 <Pressable 
                     style={styles.row}
                     onPress={()=> navigation.navigate("Change Password",{userId , userToken})}
@@ -293,14 +309,27 @@ const Profile = (username) => {
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'42%'}}/>
                 </Pressable>
 
+                {/**Notifications */}
                 <Pressable 
                     style={styles.row}
                     onPress={()=> navigation.navigate("Notifications", {notifications})}
                     >                  
                         <Text style={styles.locationText}>Notifications</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'57%'}}/>
+                        {(numNotifications===0)?(
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'56%'}}/>)
+                        :(
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{marginLeft:'60%',backgroundColor:'red', width:30,height:25,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
+                                <Text style={{color:'white'}}>{numNotifications}</Text>
+                            </View>
+                            <Feather name={'chevron-right'} size={15} style={{marginLeft:'2%',marginTop:5}}/>
+                        </View>
+                        
+                        )
+                        }
                 </Pressable>
 
+                {/*Businesses */}
                 <Pressable 
                     style={styles.row}
                     onPress={()=> navigation.navigate("Businesses", {userId , userToken , userName})}
@@ -309,22 +338,38 @@ const Profile = (username) => {
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'60%'}}/>
                 </Pressable>
 
+                {/*Reservation Requests */}
                 <Pressable 
                     style={styles.row}
                     onPress={()=> navigation.navigate("Reservation Requests",{item:requests})}
                     >                  
                         <Text style={styles.locationText}>Reservations Requests</Text>
+                        {(numRequests===0)?(
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>)
+                        :(
+                        <View style={{flexDirection:'row'}}>
+                            <View style={{marginLeft:'35%',backgroundColor:'red', width:30,height:25,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
+                                <Text style={{color:'white'}}>{numRequests}</Text>
+                            </View>
+                            <Feather name={'chevron-right'} size={15} style={{marginLeft:'2%',marginTop:5}}/>
+                        </View>
+                        
+                        )
+                        }
+                        
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>
                 </Pressable>
 
+                {/*Reservation Squedule */}
                 <Pressable 
                     style={styles.row}
-                    // onPress={()=> navigation.navigate("SearchResults")}
+                    onPress={()=> navigation.navigate("Reservations",{userId , userToken , userName})}
                     >                  
                         <Text style={styles.locationText}>Reservations Schedule</Text>
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>
                 </Pressable>
 
+                {/*Sign Out */}
                 <Pressable 
                     style={styles.row}
                     onPress={()=>signout()} 

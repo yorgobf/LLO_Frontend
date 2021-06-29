@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { useEffect ,useState } from 'react'
-import { ScrollView, StyleSheet, Text, View , FlatList ,LogBox } from 'react-native'
+import { ScrollView, StyleSheet, Text, View , FlatList ,LogBox ,KeyboardAvoidingView, Keyboard} from 'react-native'
 import API from '../../../NGROK'
 import HostHome from '../../components/Host/HostHome'
 import Post from '../../components/post/Post'
@@ -41,12 +41,12 @@ const HomeScreen = ({navigation}) => {
     }, [])
 
     return (
-        <ScrollView style={{marginBottom:75}}>
-
+        <ScrollView >
+            <KeyboardAvoidingView>
             <HomeScreenHeader businesses={businesses}/>
             <Categories businesses={businesses}/>
             <HostHome />
-                <Text style={{fontWeight: '600',fontSize:18,paddingLeft:25}} >
+                <Text style={{fontWeight: '600',fontSize:18,paddingLeft:25,marginBottom:5}} >
                     Recently Added :
                 </Text>
             <FlatList
@@ -58,6 +58,8 @@ const HomeScreen = ({navigation}) => {
                         item={item} 
                     />):(null))}
             />
+            </KeyboardAvoidingView>
+            <View style={{marginBottom:75}}></View>
         </ScrollView>
     )
 }

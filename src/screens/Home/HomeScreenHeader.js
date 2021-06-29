@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        marginTop:15,
+        marginTop:10,
         flexDirection:'column', 
         fontSize: 60,
         fontWeight: 'bold',

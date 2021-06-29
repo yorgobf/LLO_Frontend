@@ -77,8 +77,8 @@ const App = () => {
         <ProfileNavigation /> */}
 
         {/* <Reservation /> */}
-        <LoginNav />
-        {/* <Router /> */}
+        {/* <LoginNav /> */}
+        <Router />
         {/* <Navigator/> */}
       </NavigationContainer>
   );

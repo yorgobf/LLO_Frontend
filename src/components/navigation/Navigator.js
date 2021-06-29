@@ -1,5 +1,5 @@
 import React , {useState, useEffect} from 'react'
-import { StyleSheet, Text, View ,Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View ,Image, TouchableOpacity, Keyboard } from 'react-native'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -13,7 +13,7 @@ import Host from '../../screens/Host/Host';
 import Maps from '../../screens/Map/Maps';
 import Post from '../post/Post';
 import HomeScreen from '../../screens/Home/HomeScreen';
-import ExploreNavigation from './ExploreNavigation'
+// import ExploreNavigation from './ExploreNavigation'
 import Categories from '../../screens/Home/Categories'
 import LocationSearch from '../../screens/LocationSearch/LocationSearch'
 import PostScreen from '../../screens/PostScreen/PostScreen'
@@ -52,20 +52,37 @@ const Navigator = () => {
                 keyboardHidesTabBar: true,
                 style: {
                     position: 'absolute',
-                    bottom: 15,
-                    left: 10,
-                    right: 10,
-                    elevation: 0,
-                    backgroundColor: '#ffffff',
+                    bottom: 12,
+                    left: 8,
+                    right: 8,
+                    //elevation: 0,
+                    borderColor:'grey',
+                    borderWidth:0.5,
+                    borderTopColor:'grey',
+                    borderTopWidth:0.5,
+                    backgroundColor: 'white',
                     borderRadius: 15,
-                    height: 60,
-                    ...styles.shadow
+                    height: 65,
+                    // shadowColor: "#000",
+                    // shadowOffset: {
+                    //     width: 0,
+                    //     height: 12,
+                    // },
+                    // shadowOpacity: 0.58,
+                    // shadowRadius: 16.00,
+
+                    // elevation: 24,
+                    
                 }
             }}
             >
                 <Tab.Screen
                 name={"Explore"}
-                component={ExploreNavigation}
+                component={HomeScreen}
+                tabBarOptions={{
+                    keyboardHidesTabBar: true,
+                    style: { position: 'absolute' }
+                 }}
                 options={{
                     tabBarIcon:({focused}) => (
                         <View style={{alignItems:'center'}}>

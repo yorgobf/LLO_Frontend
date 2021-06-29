@@ -107,7 +107,7 @@ const Register = () => {
             />
 
             {/* Header */}
-                <Image source={require('../../../assets/gif/login.gif')} style={styles.gif}/>
+                <Image source={require('../../../assets/gif/login.js.gif')} style={styles.gif}/>
             <View style={styles.topCont}></View>
             {/* Container of the inputs */}
             <View style={styles.container}>
@@ -212,21 +212,21 @@ export default Register
 
 const styles = StyleSheet.create({
     page: {
-        height:Dimensions.get('screen').height+95,
-        backgroundColor:'#ecf5e0'
+        height:Dimensions.get('screen').height+85,
+        backgroundColor:'#384c39'
     },
 
     container:{
         justifyContent:'space-between',
-        //height:'40%',
+        //height:Dimensions.get('screen').height*0.6,
         flex:1.5,
-        padding: 20,
-        bottom:20,
-        marginHorizontal:5 ,
-        borderTopStartRadius:40,
-        borderTopEndRadius:40,
-        borderBottomStartRadius:40,
-        borderBottomEndRadius:40,
+        padding: 15,
+        bottom:'0.5%',
+        marginHorizontal:3 ,
+        borderTopStartRadius:20,
+        borderTopEndRadius:20,
+        borderBottomStartRadius:20,
+        borderBottomEndRadius:20,
         backgroundColor:'white',
         borderWidth:1,
         borderColor:'lightgrey',
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
         fontSize:34,
         color:'#f15454',
         fontWeight:'600',
-        paddingTop:28,
+        paddingTop:10,
 
     },
 
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
 
 
     input:{
-        width: width-50,
+        width: width-40,
         height: 48,
         fontSize: 17, 
         color: 'black',

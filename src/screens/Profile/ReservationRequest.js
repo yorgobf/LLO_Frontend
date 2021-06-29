@@ -4,7 +4,7 @@ import Request from './Request'
 
 const ReservationRequest = (props) => {
     return (
-        <ScrollView>
+        <ScrollView style={{marginBottom : 80}}>
 
         {!props.route.params.item[0]  && (
                 <View style={{
@@ -16,11 +16,13 @@ const ReservationRequest = (props) => {
                     <Text style={{
                         color:'grey',
                         fontSize:25,
+                        marginHorizontal:10,
                         textAlign: 'center'
                     }}>There is no reservation requests yet!</Text>
                     
                 </View>
             )}
+            
             <FlatList
                 //keyExtractor={(item) => item.id}
                 data={props.route.params.item}

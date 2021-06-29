@@ -45,8 +45,8 @@ const Maps = () => {
         const region = {
             latitude: coordinate.latitude,
             longitude: coordinate.longitude,
-            latitudeDelta: 0.2,
-            longitudeDelta: 0.2
+            latitudeDelta: 0.15,
+            longitudeDelta: 0.11
         }
         map.current.animateToRegion(region); 
 

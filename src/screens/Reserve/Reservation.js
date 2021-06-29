@@ -23,6 +23,7 @@ const Reservation = (props) => {
     var hostname = props.route.params.hostname
     var hostId = props.route.params.hostId    
     var businessName = props.route.params.businessName
+    var businessId = props.route.params.businessId
     
     const width = Dimensions.get('screen').width
 
@@ -47,6 +48,7 @@ const Reservation = (props) => {
             numberAdults : adults ,
             numberKids : kids ,
             businessName : businessName,
+            businessId : businessId,
             date : date,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           })

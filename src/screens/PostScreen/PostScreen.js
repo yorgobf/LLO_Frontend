@@ -12,6 +12,7 @@ import app from '../../../Base'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 import API from '../../../NGROK'
+import { create } from 'react-test-renderer'
 
 require('firebase/firestore');
 
@@ -34,25 +35,29 @@ const PostScreen = (props) => {
 
     const [username , setUsername] = useState();
 
+    const path = [props.route.params.item.hosted_by, userId].sort();
+
 
     const [coordinates,setCoordinates] = useState( JSON.parse(props.route.params.item.location_coordinate))
 
     const goToBookingScreen = () =>{
-            navigation.navigate("Reservation",{ hostname:props.route.params.item.hostname, username:username , userId:userId , hostId : props.route.params.item.hosted_by , businessName: props.route.params.item.name})
+            navigation.navigate("Reservation",{ hostname:props.route.params.item.hostname, businessId:props.route.params.item.id ,username:username , userId:userId , hostId : props.route.params.item.hosted_by , businessName: props.route.params.item.name})
     }
 
     const db = app.firestore()
     
     const createChat = async (username , hostname) => {
+        
         await db
         .collection('chats')
+        // .doc(`${path[0]}_${path[1]}`)
         .add({ 
             participants: [ hostname , username]  })
-        .then(()=>{
-            alert('chat Added')
-        //navigation.goBack()
-        })
-        .catch((error)=>alert(error))
+        .then(
+            alert('Chat added!\nYou can now ask the host all the questions you have.'),
+            navigation.goBack()
+        )
+        .catch(err=>console.warn('erre:',err))
     }
 
     const deletePost = (id) =>{
@@ -68,31 +73,31 @@ const PostScreen = (props) => {
     }
     
 
-    const checkChat = async (username , hostname) => {
+    // const checkChat = async (username , hostname) => {
         
-        var exist = false;
-        let create 
+    //     var exist = false;
+    //     let create 
         
-        let u 
-        await db.
-                collection("chats")
-                .where( "participants" , "array-contains", username)
-                .onSnapshot(
-                    (snapshot) =>{
-                        setChats( snapshot.docs.map((doc)=>({
-                            data:doc.data()
-                        }))
-                            //console.warn(exist)
-                            //exist = n.includes(hostname)
-                        )
-                        //return alert('Chat already exist!\nGo to the chat Screen to chat with the host')
-                    }
-                )
-                .catch((error)=>alert(error))
+    //     let u 
+    //     await db.
+    //             collection("chats")
+    //             .where( "participants" , "array-contains", username)
+    //             .onSnapshot(
+    //                 (snapshot) =>{
+    //                     setChats( snapshot.docs.map((doc)=>({
+    //                         data:doc.data()
+    //                     }))
+    //                         //console.warn(exist)
+    //                         //exist = n.includes(hostname)
+    //                     )
+    //                     //return alert('Chat already exist!\nGo to the chat Screen to chat with the host')
+    //                 }
+    //             )
+    //             .catch((error)=>alert(error))
 
-            console.warn(chats)
+    //         console.warn(chats)
 
-    }
+    // }
 
     const getUserData = async () => {
         try {
@@ -117,6 +122,8 @@ const PostScreen = (props) => {
         <View style={{height:'100%'}}>
         <ScrollView style={styles.mainContainer}>
             <View >
+
+                {/* {console.warn(`${path[0]}_${path[1]}`)} */}
 
             {/*image */}
                 <ImageBackground source={{uri : props.route.params.item.photo_url}} style={styles.image}>
@@ -256,14 +263,16 @@ const PostScreen = (props) => {
                     </View>                    
                 </View>
 
+                
                 {/*Chat with host */}
-                <Pressable onPress={()=>checkChat(username , hostname)} style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
+                {(username !== hostname )?(
+                <Pressable onPress={()=>createChat(username , hostname , path)} style={{padding: 7,paddingLeft:5, borderBottomWidth: 1, borderColor: 'lightgrey', flexDirection: 'row' , alignItems: 'center',}} >
                     <View>
-                        <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:3 }}>Have a Question?</Text>
+                        <Text style={{fontSize:17, fontWeight:'bold' ,marginBottom:3 }}>Have a question?</Text>
                         <Text style={{fontSize:17,marginBottom:5}}>Send {props.route.params.item.hostname} a message!</Text>
                     </View>
                     <Feather name={'chevron-right'} size={30} style={{marginLeft:'38%'}}/>
-                </Pressable>
+                </Pressable>):(<></>)}
 
             </View>
 

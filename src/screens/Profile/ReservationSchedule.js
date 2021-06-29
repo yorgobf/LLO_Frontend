@@ -1,14 +1,13 @@
+import API from '../../../NGROK'
+import Business from '../../components/post/Business'
+import { useIsFocused } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 import axios from 'axios'
 import React , { useEffect , useState}from 'react'
 import { StyleSheet, Text, View , ScrollView , FlatList, Dimensions } from 'react-native'
-import API from '../../../NGROK'
-import Post from '../../components/post/Post'
-import { useIsFocused } from '@react-navigation/native';
-import Spinner from 'react-native-loading-spinner-overlay';
 
+const ReservationSchedule = ({route}) => {
 
-
-const Businesses = ({route}) => {
     const { userId, userToken ,username } = route.params;
     const [businesses , setBusinesses ] = useState([]);
     const [refresh, setRefresh] = useState(false)
@@ -26,13 +25,16 @@ const Businesses = ({route}) => {
                 setBusinesses(res.data)
                 setSpinner(false)
             })
-            .catch(err=>console.warn(err))
-            setRefresh(true);
+            .catch(err=>{
+                setRefresh(false);
+                console.warn('reservation:',err)
+        })
+            setRefresh(false);
         } else if (!isFocused) {
             setRefresh(false);
             setSpinner(false)
         }
-    })
+    },[])
 
 
 
@@ -65,12 +67,13 @@ const Businesses = ({route}) => {
         )}
 
         {businesses[0] &&(
+            
         <ScrollView style={{marginBottom : 80}}>
             <FlatList
                 keyExtractor={(item) => item.id}
                 data={businesses}
                 renderItem={({item}) => (
-                    <Post
+                    <Business
                         item={item} 
                     />)}
             />
@@ -79,12 +82,10 @@ const Businesses = ({route}) => {
     )
 }
 
-export default Businesses
+export default ReservationSchedule
 
 const styles = StyleSheet.create({
-
     spinnerTextStyle: {
         color: '#FFF'
     },
-
 })

@@ -99,13 +99,13 @@ const Login = ({navigation}) => {
         <KeyboardAvoidingView style={styles.page}>
             {/* Header */}
             <View style={styles.imageCont}>
-                <Image source={require('../../../assets/gif/login.gif')} style={styles.gif}/>
+                <Image source={require('../../../assets/gif/login.js.gif')} style={styles.gif}/>
             </View>
 
             {/* Container of the inputs */}
             <View style={styles.container}>
 
-                <Text style={styles.title}>Welcome Back</Text>
+                <Text style={styles.title}>Welcome</Text>
 
                 {/* Username Input*/}
                 <View style={styles.inputContainer,{marginTop: '5%'}}>
@@ -179,21 +179,22 @@ export default Login;
 
 const styles = StyleSheet.create({
     page: {
-        height:Dimensions.get('screen').height-60,
-        backgroundColor:'#ecf5e0'
+        height:Dimensions.get('screen').height-70,
+        backgroundColor:'#384c39'
     },
 
     container:{
         justifyContent: 'space-between',
+        //height:Dimensions.get('screen').height*0.6,
         flex:1.5,
-        bottom:'1%',
+        bottom:'0.5%',
         padding: 20,
-        marginBottom:40,
-        marginHorizontal:5 ,
-        borderTopStartRadius:40,
-        borderTopEndRadius:40,
-        borderBottomStartRadius:40,
-        borderBottomEndRadius:40,
+        marginBottom:3,
+        marginHorizontal:3 ,
+        borderTopStartRadius:20,
+        borderTopEndRadius:20,
+        borderBottomStartRadius:20,
+        borderBottomEndRadius:20,
         backgroundColor:'white',
         borderWidth:1,
         borderColor:'lightgrey',
@@ -244,6 +245,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         height: undefined,
         aspectRatio: 3/2,
+        //marginBottom:10,
         // marginHorizontal:5,
 
     },

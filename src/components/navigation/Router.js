@@ -3,7 +3,7 @@ import {createStackNavigator} from "@react-navigation/stack"
 import { NavigationContainer, StackActions } from "@react-navigation/native"
 import { StyleSheet, Text, View  } from 'react-native'
 
-import homeNavigator from './Navigator'
+import Navigator from './Navigator'
 import Reservation from '../../screens/Reserve/Reservation'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreenHeader from '../../screens/Home/HomeScreenHeader'
@@ -23,16 +23,16 @@ const Router = (props) => {
 
                 <Stack.Screen
                 name={"HomeNavigator"}
-                component={homeNavigator}
+                component={Navigator}
                 options={{
                     headerShown: false
                 }}            
                 />
 
-                <Stack.Screen
+                {/* <Stack.Screen
                 name={"Location"}
                 component={LocationSearch}          
-                />
+                /> */}
 
                 <Stack.Screen
                 name={"Post"}

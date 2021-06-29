@@ -25,7 +25,7 @@ const PostMap = (props) => {
                     <Text style={{fontWeight:'bold'}}>{props.item.name}</Text>
 
                     {/*Type and Description*/}
-                    <Text style={styles.description} numberOfLines={2}>{props.item.description}</Text>
+                    <Text style={styles.description} numberOfLines={1}>{props.item.description}</Text>
 
                     <View style={{}}>
                         {/**Price */}
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     container: {
         marginBottom:80,
         margin:20,
-        height: Dimensions.get('screen').height-900,
+        height: Dimensions.get('screen').height*0.14,
         padding:5,
         borderRadius:15,
         backgroundColor:'white',
@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
 
     description:{
         fontSize: 15,
-        marginBottom:5
+        marginBottom:3
     },
 
     nbPers: {
-        marginBottom: 3,
+        marginBottom: 2,
         color: '#5b5b5b',
 
     },
