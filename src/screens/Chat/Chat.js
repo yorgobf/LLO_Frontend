@@ -17,7 +17,9 @@ const Chat = (username) => {
 
     useEffect(()=>{
         const getChats =(user)=>{ 
-            db.collection("chats").where( "participants" , "array-contains", user).onSnapshot((snapshot) =>{
+            db.collection("chats").where( "participants" , "array-contains", user)
+            //.orderBy('timestamp')
+            .onSnapshot((snapshot) =>{
         
             setChats( snapshot.docs.map((doc)=>({
                 id:doc.id,

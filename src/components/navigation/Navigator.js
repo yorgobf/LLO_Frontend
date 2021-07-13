@@ -62,7 +62,7 @@ const Navigator = () => {
                     borderTopWidth:0.5,
                     backgroundColor: 'white',
                     borderRadius: 15,
-                    height: 65,
+                    height: 57,
                     // shadowColor: "#000",
                     // shadowOffset: {
                     //     width: 0,

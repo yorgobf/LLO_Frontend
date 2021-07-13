@@ -16,11 +16,13 @@ const Business = (props) => {
             <View>
                 <Image source={{uri : props.item.photo_url}} style={styles.image} />
             </View>
-            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                <Text style={{fontWeight:'600', fontSize:20,marginLeft:'20%'}}>
+            <View style={{flexDirection:'row'}}>
+                <Text style={{fontWeight:'600', fontSize:20,marginLeft:10}}>
                     {props.item.name}
                 </Text>
-                <Feather name={'chevron-right'} size={15} style={{}}/>
+                <View style={{flexDirection:'row',alignSelf:'flex-end'}}>
+                <Feather name={'chevron-right'} size={15} style={{alignSelf:'flex-end',marginRight:10,bottom:4,flexDirection:'row'}}/>
+                </View>
             </View>
         </Pressable>
     )

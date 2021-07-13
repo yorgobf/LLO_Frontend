@@ -33,6 +33,7 @@ import Profile from './src/screens/Profile/Profile';
 import PostScreen from './src/screens/PostScreen/PostScreen';
 import Reservation from './src/screens/Reserve/Reservation';
 import Request from './src/screens/Profile/Request';
+import ReservationRequest from './src/screens/Profile/ReservationRequest';
 
 
 const App = () => {
@@ -79,6 +80,7 @@ const App = () => {
         {/* <Reservation /> */}
         {/* <LoginNav /> */}
         <Router />
+        {/* <ReservationRequest /> */}
         {/* <Navigator/> */}
       </NavigationContainer>
   );

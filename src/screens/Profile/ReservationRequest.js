@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dimensions, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import Request from './Request'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const ReservationRequest = (props) => {
     return (
@@ -18,7 +19,7 @@ const ReservationRequest = (props) => {
                         fontSize:25,
                         marginHorizontal:10,
                         textAlign: 'center'
-                    }}>There is no reservation requests yet!</Text>
+                    }}>There are no reservation requests yet.</Text>
                     
                 </View>
             )}
@@ -37,4 +38,7 @@ const ReservationRequest = (props) => {
 
 export default ReservationRequest
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+
+})

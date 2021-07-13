@@ -48,7 +48,7 @@ const ChatScreen = ({route}) => {
             return alert("You can't send an empty message");
         }
         Keyboard.dismiss();
-        console.warn(message)
+        // console.warn(message)
 
         db.collection('chats').doc(route.params.id).collection('messages').add({
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),

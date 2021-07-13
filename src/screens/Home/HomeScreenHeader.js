@@ -37,7 +37,7 @@ const HomeScreenHeader = (props) => {
                             
                         </TextInput>
                         <Pressable
-                        style={{marginLeft: '45%'}}
+                        style={{marginLeft: '42%'}}
                         onPress={()=>searchByName(businessName)}
                         >
                             <Fontisto name="search" size={25}  color={"#f15454"}  />

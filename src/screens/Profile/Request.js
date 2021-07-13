@@ -77,7 +77,7 @@ const Request = (props) => {
                 <View style={{padding:10 , borderBottomColor:'lightgrey' , borderBottomWidth:1}}>
 
                     <Text style={{fontSize:17 ,marginBottom:3}}>
-                        user : {props.item.data.sender}
+                        User : {props.item.data.sender}
                     </Text>
 
                     <Text style={{fontSize:17 ,marginBottom:3}}>
@@ -89,7 +89,7 @@ const Request = (props) => {
                     </Text>
 
                     <Text style={{fontSize:17, marginBottom:8}}>
-                        date : {props.item.data.date}
+                        Date : {props.item.data.date}
                     </Text>
 
                 </View>

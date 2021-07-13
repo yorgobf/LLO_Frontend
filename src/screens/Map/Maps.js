@@ -30,6 +30,10 @@ const Maps = () => {
         }
     })
 
+    const setBusinessDrop = () =>{
+        console.warn(business.id)
+    }
+
     const map = useRef();
 
     useEffect(() => {
@@ -100,7 +104,6 @@ const Maps = () => {
                     />
                         
                 )}
-                
             </MapView>
             
              <View style={{position: 'absolute' , bottom : 10}}>
@@ -110,10 +113,11 @@ const Maps = () => {
                     data={businesses}
                     renderItem={({item}) =><PostMap item={item} />}
                     horizontal
+                    //extraData={selectedBusinessId}
                     showsHorizontalScrollIndicator={false}
-                    snapToInterval={width - 50}
+                    snapToInterval={width - width*0.5}
                     snapToAlignment={"center"}
-                    decelerationRate={'fast'}
+                    //decelerationRate={'fast'}
                     viewabilityConfig={viewConfig.current}
                     onViewableItemsChanged={onViewChange.current}
                 />

@@ -18,8 +18,8 @@ const Notification = (props) => {
                                 <View style={styles.container2 }>
                                     
                                     
-                                    <View width='10%'>
-                                        <Feather name='check' size={40} color='#1cc755'  />
+                                    <View width='13%'>
+                                        <Feather name='check' size={40} color='#1cc755' style={{marginLeft:5}} />
                                     </View>
                                     <View width='85%'>
                                     <Text style={{fontSize:16, marginHorizontal:10}}>{props.item.data.sender} {props.item.data.status} your reservation at "{props.item.data.businessName}" on {props.item.data.date}. </Text>
@@ -30,7 +30,7 @@ const Notification = (props) => {
                         ):(
                             <View style={{...styles.innerContainer ,backgroundColor:'#ed4141',}}>
                                 <View style={styles.container2 }>
-                                <View width='10%'>
+                                <View width='13%'>
                                     <Feather name='x' size={40} color='#ed4141' style={{marginLeft:'15%'}} />
                                 </View>
                                 <View width='85%'>

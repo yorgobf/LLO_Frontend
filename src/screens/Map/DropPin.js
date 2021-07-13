@@ -6,13 +6,19 @@ import Surfing from '../../../assets/tabIcons/surf.png'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import { Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const DropPin = (props) => {
     var coordinates = JSON.parse(props.item.location_coordinate)
+    const navigation = useNavigation()
     return (
         <Marker coordinate={coordinates} >
             {/** */}
-                <View style={{
+                <Pressable 
+                //onPress={()=>setBusinessDrop(business)}
+                //onPress={()=>navigation.navigate("Post",{item:props.item})}
+                style={{
                     backgroundColor: props.isSelected ? '#333333' : 'white' , 
                     height:45,
                     width:40,
@@ -25,7 +31,7 @@ const DropPin = (props) => {
                     }}>
                     {(props.item.category==='Tent camping site')?(<Fontisto name='tent' size={34} color={props.isSelected ? 'white' : 'black'} />)
                     :
-                    ((props.item.category==='Glamping')?(<Image source={require('../../../assets/tabIcons/glamping.png')} style={{height:15,width:35 , tintColor : props.isSelected ? 'white' : 'black'}}/>)
+                    ((props.item.category==='Glamping')?(<Image source={require('../../../assets/tabIcons/glamping.png')} style={{height:15,width:26 , tintColor : props.isSelected ? 'white' : 'black'}}/>)
                     :
                     (((props.item.category==='Hiking group')?(<FontAwesome5 name='hiking' size={28} color={props.isSelected ? 'white' : 'black'} />)
                     :
@@ -43,7 +49,7 @@ const DropPin = (props) => {
                     (<Image source={require('../../../assets/tabIcons/kayak.png')} style={{height:30,width:26,tintColor:props.isSelected ? 'white' : 'black'}}/>))))))))))
                     }
 
-                </View>
+                </Pressable>
         </Marker>
     )
 }

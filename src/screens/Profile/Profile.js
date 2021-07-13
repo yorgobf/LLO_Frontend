@@ -306,7 +306,7 @@ const Profile = (username) => {
                     onPress={()=> navigation.navigate("Change Password",{userId , userToken})}
                     >                  
                         <Text style={styles.locationText}>Change Password</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'42%'}}/>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'40%'}}/>
                 </Pressable>
 
                 {/**Notifications */}
@@ -319,7 +319,7 @@ const Profile = (username) => {
                         <Feather name={'chevron-right'} size={15} style={{marginLeft:'56%'}}/>)
                         :(
                         <View style={{flexDirection:'row'}}>
-                            <View style={{marginLeft:'60%',backgroundColor:'red', width:30,height:25,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
+                            <View style={{marginLeft:'57%',backgroundColor:'red', width:30,height:25,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
                                 <Text style={{color:'white'}}>{numNotifications}</Text>
                             </View>
                             <Feather name={'chevron-right'} size={15} style={{marginLeft:'2%',marginTop:5}}/>
@@ -345,10 +345,10 @@ const Profile = (username) => {
                     >                  
                         <Text style={styles.locationText}>Reservations Requests</Text>
                         {(numRequests===0)?(
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>)
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'25%'}}/>)
                         :(
                         <View style={{flexDirection:'row'}}>
-                            <View style={{marginLeft:'35%',backgroundColor:'red', width:30,height:25,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
+                            <View style={{marginLeft:'30%',backgroundColor:'red', width:30,height:25,borderRadius:25,alignItems:'center',justifyContent:'center'}}>
                                 <Text style={{color:'white'}}>{numRequests}</Text>
                             </View>
                             <Feather name={'chevron-right'} size={15} style={{marginLeft:'2%',marginTop:5}}/>
@@ -366,7 +366,7 @@ const Profile = (username) => {
                     onPress={()=> navigation.navigate("Reservations",{userId , userToken , userName})}
                     >                  
                         <Text style={styles.locationText}>Reservations Schedule</Text>
-                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'29%'}}/>
+                        <Feather name={'chevron-right'} size={15} style={{marginLeft:'25%'}}/>
                 </Pressable>
 
                 {/*Sign Out */}
